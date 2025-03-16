@@ -71,7 +71,11 @@ export default configure((ctx) => {
       // distDir
 
       // extendViteConf (viteConf) {},
-      // viteVuePluginOptions: {},
+      viteVuePluginOptions: {
+        script: {
+          defineModel: true,
+        },
+      },
 
       vitePlugins: [
         [
