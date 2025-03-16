@@ -7,13 +7,24 @@ defineProps<{
 
 const amount = defineModel();
 function handleKeydown(e: KeyboardEvent) {
-  const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete'];
+  const allowedKeys = [
+    'Backspace',
+    'ArrowLeft',
+    'ArrowRight',
+    'Delete',
+    '.',
+    ...Array(10)
+      .fill(0)
+      .map((e, i) => `${i}`),
+  ];
   const { innerText = '' } = e.target as HTMLInputElement;
+  const newInput = e.key.match(/^[0-9\.]$/) ? innerText + e.key : innerText;
 
-  const newInput = innerText + e.key;
-  if (!allowedKeys.includes(e.key) && isNaN(Number(newInput))) {
+  if (
+    (!e.ctrlKey && !e.metaKey && !allowedKeys.includes(e.key)) ||
+    isNaN(Number(newInput))
+  ) {
     e.preventDefault();
-    return false;
   }
 }
 
