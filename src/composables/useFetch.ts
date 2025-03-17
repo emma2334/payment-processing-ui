@@ -10,7 +10,7 @@ export function useFetch<T>(
   const { onSucess, onError, ...init } = options ?? {};
   const data = ref<T>();
   const error = ref<T>();
-  fetch('/api/locations', { method: 'GET', ...init })
+  fetch(input, { method: 'GET', ...init })
     .then((response) => response.json())
     .then((res) => {
       data.value = res;
