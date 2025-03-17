@@ -22,7 +22,6 @@
     border-top: solid 1px $gray-200;
 
     @media (min-width: $breakpoint-md-min) {
-      font-size: 10px;
       border-top: 0;
       border-left: solid 1px $gray-200;
     }
@@ -30,6 +29,8 @@
 
   :deep(.section) {
     padding: 16px;
+    font-size: map-get($font-sizes, xs);
+
     &:not(:last-child) {
       border-bottom: solid 1px $gray-100;
     }
