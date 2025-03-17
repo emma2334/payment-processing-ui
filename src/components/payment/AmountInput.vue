@@ -3,22 +3,27 @@ import { defineModel } from 'vue';
 
 defineProps<{
   placeholder?: string;
+  hint?: string;
 }>();
 
-const amount = defineModel();
+const amount = defineModel<number>();
 function handleKeydown(e: KeyboardEvent) {
-  const allowedKeys = [
-    'Backspace',
-    'ArrowLeft',
-    'ArrowRight',
-    'Delete',
+  const leigalInput = [
     '.',
     ...Array(10)
       .fill(0)
       .map((e, i) => `${i}`),
   ];
-  const { innerText = '' } = e.target as HTMLInputElement;
-  const newInput = e.key.match(/^[0-9\.]$/) ? innerText + e.key : innerText;
+
+  const allowedKeys = [
+    'Backspace',
+    'ArrowLeft',
+    'ArrowRight',
+    'Delete',
+    ...leigalInput,
+  ];
+  const { innerText } = e.target as HTMLInputElement;
+  const newInput = leigalInput.includes(e.key) ? innerText + e.key : innerText;
 
   if (
     (!e.ctrlKey && !e.metaKey && !allowedKeys.includes(e.key)) ||
@@ -29,14 +34,17 @@ function handleKeydown(e: KeyboardEvent) {
 }
 
 function handleInput(e: Event) {
-  amount.value = (e.target as HTMLInputElement).innerText;
+  const { innerText } = e.target as HTMLInputElement;
+  const newNum = Number(innerText);
+  amount.value = !isNaN(newNum) && innerText.trim() !== '' ? newNum : undefined;
 }
 </script>
 
 <template>
-  <div>
+  <div class="column items-center">
+    {{ hint }}
     <span
-      class="text-7xl text-weight-bold"
+      :class="['text-7xl text-weight-bold', { empty: amount === undefined }]"
       role="textbox"
       contenteditable
       @keydown="handleKeydown"
@@ -49,9 +57,18 @@ function handleInput(e: Event) {
 </template>
 
 <style scoped lang="scss">
-[contenteditable]:focus {
-  outline: none;
-  border-bottom: solid 2px $gray-900;
+div {
+  color: $gray-700;
+  font-size: map-get($font-sizes, $key: lg);
+  font-weight: 700;
+}
+
+[contenteditable] {
+  color: black;
+  &:focus {
+    outline: none;
+    border-bottom: solid 2px $gray-900;
+  }
 }
 
 [contenteditable]:before {
@@ -61,7 +78,7 @@ function handleInput(e: Event) {
   font-size: map-get($font-sizes, 4xl);
 }
 
-[contenteditable]:empty {
+[contenteditable].empty {
   color: $gray-100;
   &:after {
     content: attr(placeholder);
