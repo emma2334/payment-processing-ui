@@ -4,7 +4,7 @@ import UiOptionGroup from '../UiOptionGroup.vue';
 import { ref } from 'vue';
 
 const { t } = useI18n();
-const payBy = ref<'cash' | 'card'>('cash');
+const payBy = defineModel('payBy');
 </script>
 
 <template>
