@@ -14,7 +14,7 @@ const { data } = useFetch<typeof LOCATIONS>('/api/locations', {
 <template>
   <q-select v-model="location" :options="data" option-label="name">
     <template #prepend>
-      <q-icon name="place" @click.stop.prevent />
+      <q-icon name="fa-duotone fa-solid fa-location-dot" @click.stop.prevent />
     </template>
   </q-select>
 </template>
