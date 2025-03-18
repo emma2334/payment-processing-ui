@@ -8,12 +8,14 @@ const payBy = defineModel('payBy');
 </script>
 
 <template>
-  <div class="flex justify-between q-py-md">
+  <div class="flex q-py-md">
     {{ t('Subtotal') }}
+    <q-space />
     <span>$0</span>
   </div>
-  <div class="flex justify-between q-py-md">
+  <div class="flex q-py-md">
     {{ t('Tax') }}
+    <q-space />
     <span>$0</span>
   </div>
   <hr />
@@ -39,21 +41,23 @@ const payBy = defineModel('payBy');
     ]"
   />
 
-  <div class="flex justify-between q-py-lg">
+  <div class="flex q-py-lg">
     <span>
       {{ t('Patient Card Processing Fee') }}
       <a href="">{{ t('Edit') }}</a>
     </span>
+    <q-space />
     <span>$0</span>
   </div>
   <hr />
-  <div class="flex justify-between items-center q-py-lg text-weight-bold">
+  <div class="flex items-center q-py-lg text-weight-bold">
     <template v-if="payBy === 'cash'">
       {{ t('Pay by Cash Total') }}
     </template>
     <template v-else>
       {{ t('Pay by Card Total') }}
     </template>
+    <q-space />
     <span class="text-xl green">$0</span>
   </div>
   <span class="red text-weight-medium">
