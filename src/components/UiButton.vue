@@ -7,7 +7,9 @@ defineProps<{
 </script>
 
 <template>
-  <q-btn :class="['btn', { light }]" :label="label" :icon="icon" />
+  <q-btn :class="['btn', { light }]" :label="label" :icon="icon">
+    <slot />
+  </q-btn>
 </template>
 
 <style scoped lang="scss">
