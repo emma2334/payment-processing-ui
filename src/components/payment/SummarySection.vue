@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import OptionGroup from '../ButtonGroup.vue';
+import UiOptionGroup from '../UiOptionGroup.vue';
 import { ref } from 'vue';
 
 const { t } = useI18n();
@@ -20,7 +20,7 @@ const payBy = ref<'cash' | 'card'>('cash');
   <div class="q-py-lg text-weight-medium">
     {{ t('Total') }}
   </div>
-  <OptionGroup
+  <UiOptionGroup
     spread
     no-caps
     outline
