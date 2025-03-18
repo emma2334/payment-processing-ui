@@ -13,15 +13,19 @@ const payBy = defineModel('payBy');
     <q-space />
     <span>$0</span>
   </div>
+
   <div class="flex q-py-md">
     {{ t('Tax') }}
     <q-space />
     <span>$0</span>
   </div>
+
   <hr />
+
   <div class="q-py-lg text-weight-medium">
     {{ t('Total') }}
   </div>
+
   <UiOptionGroup
     spread
     no-caps
@@ -49,7 +53,9 @@ const payBy = defineModel('payBy');
     <q-space />
     <span>$0</span>
   </div>
+
   <hr />
+
   <div class="flex items-center q-py-lg text-weight-bold">
     <template v-if="payBy === 'cash'">
       {{ t('Pay by Cash Total') }}
@@ -60,6 +66,7 @@ const payBy = defineModel('payBy');
     <q-space />
     <span class="text-xl green">$0</span>
   </div>
+
   <span class="red text-weight-medium">
     *{{ t('Total amount falls below the required minimum of $0.50') }}
   </span>
