@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import UiOptionGroup from '../UiOptionGroup.vue';
-import { ref } from 'vue';
 
 const { t } = useI18n();
 const payBy = defineModel('payBy');

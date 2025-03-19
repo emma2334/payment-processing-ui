@@ -8,13 +8,16 @@ import DeviceSelect from 'src/components/payment/ReaderSelect.vue';
 import SummarySection from 'src/components/payment/SummarySection.vue';
 import UiButton from 'src/components/UiButton.vue';
 import CreditCardDetailsDialog from 'src/components/payment/CreditCardDetailsDialog.vue';
+import PaymentOnReaderDialog from 'src/components/payment/PaymentOnReaderDialog.vue';
 const { t } = useI18n();
 
 const location = ref<string>();
 const device = ref<string>();
 const amount = ref();
 const payBy = ref<'cash' | 'card'>('cash');
+
 const isCreditCardDetailsDialogVisible = ref(false);
+const isPaymentOnReaderDialogVisible = ref(false);
 </script>
 
 <template>
@@ -57,6 +60,7 @@ const isCreditCardDetailsDialogVisible = ref(false);
               icon="fa-duotone fa-solid fa-tablet-screen-button"
               :label="t('Initiate Payment on Reader')"
               no-caps
+              @click="isPaymentOnReaderDialogVisible = true"
             />
             <UiButton
               class="full-width"
@@ -72,5 +76,6 @@ const isCreditCardDetailsDialogVisible = ref(false);
     </UiContentBox>
 
     <CreditCardDetailsDialog v-model="isCreditCardDetailsDialogVisible" />
+    <PaymentOnReaderDialog v-model="isPaymentOnReaderDialogVisible" />
   </q-page>
 </template>
