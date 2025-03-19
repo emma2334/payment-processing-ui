@@ -5,21 +5,23 @@ import UiContentBox from 'src/components/UiContentBox.vue';
 import AmountInput from 'src/components/payment/AmountInput.vue';
 import LocationSelect from 'src/components/payment/LocationSelect.vue';
 import DeviceSelect from 'src/components/payment/ReaderSelect.vue';
-import Summary from 'src/components/payment/SummarySection.vue';
+import SummarySection from 'src/components/payment/SummarySection.vue';
 import UiButton from 'src/components/UiButton.vue';
+import CreditCardDetailsDialog from 'src/components/payment/CreditCardDetailsDialog.vue';
 const { t } = useI18n();
 
 const location = ref<string>();
 const device = ref<string>();
 const amount = ref();
 const payBy = ref<'cash' | 'card'>('cash');
+const isCreditCardDetailsDialogVisible = ref(false);
 </script>
 
 <template>
   <q-page class="column">
     <div class="row">
       <div class="text-2xl text-weight-medium">{{ t('collect payment') }}</div>
-      <LocationSelect v-model="location" filled dense bg-color="primary" />
+      <LocationSelect v-model="location" filled dense />
     </div>
 
     <UiContentBox>
@@ -36,7 +38,7 @@ const payBy = ref<'cash' | 'card'>('cash');
           {{ t('Summary') }}
         </div>
         <div class="section">
-          <Summary v-model:payBy="payBy" />
+          <SummarySection v-model:payBy="payBy" />
         </div>
         <div class="section">
           <LocationSelect v-model="location" borderless dense class="inline" />
@@ -45,6 +47,7 @@ const payBy = ref<'cash' | 'card'>('cash');
               class="full-width q-mt-lg q-mb-md"
               icon="fa-duotone fa-solid fa-money-bill-wave"
               :label="t('Log Payment')"
+              no-caps
             />
           </template>
           <template v-else>
@@ -53,16 +56,21 @@ const payBy = ref<'cash' | 'card'>('cash');
               class="full-width q-mt-lg q-mb-md"
               icon="fa-duotone fa-solid fa-tablet-screen-button"
               :label="t('Initiate Payment on Reader')"
+              no-caps
             />
             <UiButton
               class="full-width"
               icon="fa-duotone fa-solid fa-credit-card"
               :label="t('Input Card Number Manually')"
               light
+              no-caps
+              @click="isCreditCardDetailsDialogVisible = true"
             />
           </template>
         </div>
       </template>
     </UiContentBox>
+
+    <CreditCardDetailsDialog v-model="isCreditCardDetailsDialogVisible" />
   </q-page>
 </template>
