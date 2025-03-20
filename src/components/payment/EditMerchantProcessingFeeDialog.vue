@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { watch, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { ceil, round } from '../../utils/math';
 import UiButton from '../UiButton.vue';
 import { reactive } from 'vue';
@@ -16,7 +15,6 @@ const props = withDefaults(
   { amount: 0 }
 );
 
-const { t } = useI18n();
 const isVisible = defineModel();
 
 const merchant = reactive({
@@ -61,13 +59,13 @@ const patientFee = computed(() =>
       <q-card-section class="q-pb-none">
         <div class="row items-center">
           <div class="text-2xl text-weight-bold">
-            {{ t('Edit Merchant Processing Fee') }}
+            {{ $t('Edit Merchant Processing Fee') }}
           </div>
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup />
         </div>
         <div class="text-hint font-xs">
-          {{ t('Only applies to this transaction') }}
+          {{ $t('Only applies to this transaction') }}
         </div>
       </q-card-section>
 
@@ -82,7 +80,10 @@ const patientFee = computed(() =>
             { value: PERCENTAGE, label: `${PERCENTAGE}%` },
           ]"
           label
-          :label-value="`${merchant.percentage}%\n$${merchantPercentageFee}`"
+          :label-value="`${merchant.percentage}%\n${$n(
+            merchantPercentageFee,
+            'currency'
+          )}`"
         />
       </q-card-section>
 
@@ -90,7 +91,7 @@ const patientFee = computed(() =>
 
       <q-card-section class="row q-col-gutter-sm justify-center">
         <div class="row items-center q-col-gutter-sm">
-          {{ t('Merchant processing fee') }}
+          {{ $t('Merchant processing fee') }}
 
           <q-input
             v-model.number="merchant.percentage"
@@ -119,7 +120,7 @@ const patientFee = computed(() =>
           <span class="text-hint text-xss">/ ${{ FIXED_FEE }}</span>
         </div>
         <div class="row items-center q-col-gutter-sm">
-          {{ t('Patient processing fee') }}
+          {{ $t('Patient processing fee') }}
 
           <q-input
             v-model.number="patient.percentage"
@@ -164,18 +165,22 @@ const patientFee = computed(() =>
       <q-card-section class="text-center">
         <div class="text-weight-bold">
           {{
-            t(
-              'On this ${amount} transaction, you pay ${merchant_fee}, and patient pays ${patient_fee}',
-              { amount, merchant_fee: merchantFee, patient_fee: patientFee }
+            $t(
+              'On this {amount} transaction, you pay {merchant_fee}, and patient pays {patient_fee}',
+              {
+                amount: $n(amount, 'currency'),
+                merchant_fee: $n(merchantFee, 'currency'),
+                patient_fee: $n(patientFee, 'currency'),
+              }
             )
           }}
         </div>
       </q-card-section>
 
       <q-card-actions>
-        <q-btn flat no-caps v-close-popup>{{ t('Cancle') }}</q-btn>
+        <q-btn flat no-caps v-close-popup>{{ $t('Cancle') }}</q-btn>
         <q-space />
-        <UiButton no-caps>{{ t('Update') }}</UiButton>
+        <UiButton no-caps>{{ $t('Update') }}</UiButton>
       </q-card-actions>
     </q-card>
   </q-dialog>
