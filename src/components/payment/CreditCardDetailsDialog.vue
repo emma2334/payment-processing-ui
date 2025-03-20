@@ -38,6 +38,7 @@ const zip = ref<string>();
           class="col-12"
           :label="t('Card Number')"
           mask="#### #### #### ####"
+          unmasked-value
           filled
         />
         <q-input
@@ -45,9 +46,17 @@ const zip = ref<string>();
           class="col-6"
           :label="t('Expiration Date')"
           mask="##/##"
+          unmasked-value
           filled
         />
-        <q-input class="col-6" v-model="cvc" label="CVC" mask="###" filled />
+        <q-input
+          class="col-6"
+          v-model="cvc"
+          label="CVC"
+          mask="###"
+          unmasked-value
+          filled
+        />
         <q-select
           v-model="country"
           class="col-6"
