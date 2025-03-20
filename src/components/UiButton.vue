@@ -15,7 +15,7 @@ defineProps<{
 
 <style scoped lang="scss">
 .btn {
-  background-color: $orange-300;
+  background-color: $orange-400;
   color: white;
   --fa-primary-color: white;
   --fa-secondary-color: white;

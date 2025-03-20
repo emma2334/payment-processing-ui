@@ -9,6 +9,7 @@ import SummarySection from 'src/components/payment/SummarySection.vue';
 import UiButton from 'src/components/UiButton.vue';
 import CreditCardDetailsDialog from 'src/components/payment/CreditCardDetailsDialog.vue';
 import PaymentOnReaderDialog from 'src/components/payment/PaymentOnReaderDialog.vue';
+import EditMerchantProcessingFeeDialog from 'src/components/payment/EditMerchantProcessingFeeDialog.vue';
 const { t } = useI18n();
 
 const location = ref<string>();
@@ -18,6 +19,7 @@ const payBy = ref<'cash' | 'card'>('cash');
 
 const isCreditCardDetailsDialogVisible = ref(false);
 const isPaymentOnReaderDialogVisible = ref(false);
+const isEditMerchantProcessingFeeDialogVisible = ref(false);
 </script>
 
 <template>
@@ -41,7 +43,10 @@ const isPaymentOnReaderDialogVisible = ref(false);
           {{ t('Summary') }}
         </div>
         <div class="section">
-          <SummarySection v-model:payBy="payBy" />
+          <SummarySection
+            v-model:payBy="payBy"
+            @editProcessingFee="isEditMerchantProcessingFeeDialogVisible = true"
+          />
         </div>
         <div class="section">
           <LocationSelect v-model="location" borderless dense class="inline" />
@@ -77,5 +82,9 @@ const isPaymentOnReaderDialogVisible = ref(false);
 
     <CreditCardDetailsDialog v-model="isCreditCardDetailsDialogVisible" />
     <PaymentOnReaderDialog v-model="isPaymentOnReaderDialogVisible" />
+    <EditMerchantProcessingFeeDialog
+      v-model="isEditMerchantProcessingFeeDialogVisible"
+      :amount="amount"
+    />
   </q-page>
 </template>

@@ -52,7 +52,7 @@ function handlePayment() {
             {{ t('Auto-Processing in {count}s', { count }) }}
           </UiButton>
         </div>
-        <span class="text-xss text-weight-light">{{
+        <span class="text-hint text-xss">{{
           t('Or click “Process Payment” below')
         }}</span>
       </q-card-section>

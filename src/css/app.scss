@@ -1,8 +1,19 @@
 // app global css in SCSS form
 
+a {
+  color: $teal-400;
+  &:hover {
+    color: $teal-600;
+  }
+}
+
 // Font Sizes
 @each $key, $value in $font-sizes {
   .text-#{$key} {
     font-size: $value !important;
   }
+}
+
+.text-hint {
+  color: $gray-700;
 }

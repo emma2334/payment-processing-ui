@@ -4,6 +4,9 @@ import UiOptionGroup from '../UiOptionGroup.vue';
 
 const { t } = useI18n();
 const payBy = defineModel('payBy');
+const emit = defineEmits<{
+  (e: 'editProcessingFee'): void;
+}>();
 </script>
 
 <template>
@@ -47,7 +50,7 @@ const payBy = defineModel('payBy');
   <div class="flex q-py-lg">
     <span>
       {{ t('Patient Card Processing Fee') }}
-      <a href="">{{ t('Edit') }}</a>
+      <a href="#" @click="emit('editProcessingFee')">{{ t('Edit') }}</a>
     </span>
     <q-space />
     <span>$0</span>
