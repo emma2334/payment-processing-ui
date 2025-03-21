@@ -170,9 +170,12 @@ const {
       <q-card-actions>
         <q-btn flat no-caps v-close-popup>{{ $t('Cancle') }}</q-btn>
         <q-space />
-        <UiButton no-caps @click="$emit('update', { merchant, patient })">{{
-          $t('Update')
-        }}</UiButton>
+        <UiButton
+          no-caps
+          v-close-popup
+          @click="$emit('update', { merchant, patient })"
+          >{{ $t('Update') }}</UiButton
+        >
       </q-card-actions>
     </q-card>
   </q-dialog>

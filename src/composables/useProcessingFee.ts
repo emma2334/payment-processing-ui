@@ -28,11 +28,11 @@ export function useProcessingFee(amount: Ref<number> | number) {
   });
 
   const merchantPercentageFee = computed(() => {
-    return (amount.value * merchant.percentage) / 100;
+    return ((amount.value ?? 0) * merchant.percentage) / 100;
   });
 
   const patientPercentageFee = computed(
-    () => (amount.value * patient.percentage) / 100
+    () => ((amount.value ?? 0) * patient.percentage) / 100
   );
 
   watch(merchant, (newMerchant) => {

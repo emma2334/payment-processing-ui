@@ -6,8 +6,7 @@ const props = withDefaults(
   defineProps<{
     amount: number;
     taxRate: number;
-    percentage: number;
-    fiexdFee: number;
+    processingFee: number;
   }>(),
   {
     amount: 0,
@@ -51,6 +50,7 @@ watch([() => props.amount, () => props.taxRate], ([newAmount, newTaxRate]) => {
   </div>
 
   <UiOptionGroup
+    class="q-pb-lg"
     spread
     no-caps
     outline
@@ -63,19 +63,19 @@ watch([() => props.amount, () => props.taxRate], ([newAmount, newTaxRate]) => {
       },
       {
         value: 'card',
-        label: `${$t('Pay by Card')} ${$n(total, 'currency')}`,
+        label: `${$t('Pay by Card')} ${$n(total + processingFee, 'currency')}`,
         icon: 'fa-duotone fa-solid fa-credit-card',
       },
     ]"
   />
 
-  <div class="flex q-py-lg">
+  <div v-if="payBy === 'card'" class="flex q-pb-lg">
     <span>
       {{ $t('Patient Card Processing Fee') }}
       <a href="#" @click="emit('editProcessingFee')">{{ $t('Edit') }}</a>
     </span>
     <q-space />
-    <span>{{ $n(0, 'currency') }}</span>
+    <span>{{ $n(processingFee, 'currency') }}</span>
   </div>
 
   <hr />
@@ -83,15 +83,19 @@ watch([() => props.amount, () => props.taxRate], ([newAmount, newTaxRate]) => {
   <div class="flex items-center q-py-lg text-weight-bold">
     <span v-if="payBy === 'cash'">
       {{ $t('Pay by Cash Total') }}
+      <q-space />
+      <span class="text-xl green">{{ $n(total, 'currency') }}</span>
     </span>
     <span v-else>
       {{ $t('Pay by Card Total') }}
+      <q-space />
+      <span class="text-xl green">{{
+        $n(total + processingFee, 'currency')
+      }}</span>
     </span>
-    <q-space />
-    <span class="text-xl green">{{ $n(total, 'currency') }}</span>
   </div>
 
-  <span v-if="total < 0.05" class="red text-weight-medium">
+  <span v-if="total > 0 && total < 0.05" class="red text-weight-medium">
     *{{
       $t('Total amount falls below the required minimum of {limit}', {
         limit: $n(0.05, 'currency'),

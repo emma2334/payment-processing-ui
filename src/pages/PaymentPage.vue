@@ -10,18 +10,19 @@ import UiButton from 'src/components/UiButton.vue';
 import CreditCardDetailsDialog from 'src/components/payment/CreditCardDetailsDialog.vue';
 import PaymentOnReaderDialog from 'src/components/payment/PaymentOnReaderDialog.vue';
 import EditMerchantProcessingFeeDialog from 'src/components/payment/EditMerchantProcessingFeeDialog.vue';
+import { useProcessingFee } from 'src/composables/useProcessingFee';
 
 const location = ref<typeof LOCATIONS[number]>();
 const device = ref<string>();
 const amount = ref();
 const payBy = ref<'cash' | 'card'>('cash');
-const percentage = ref<number>(0);
-const fiexdFee = ref<number>(0);
 const total = ref<number>(0);
 
 const isCreditCardDetailsDialogVisible = ref(false);
 const isPaymentOnReaderDialogVisible = ref(false);
 const isEditMerchantProcessingFeeDialogVisible = ref(false);
+
+const { patient, patientPercentageFee } = useProcessingFee(amount);
 </script>
 
 <template>
@@ -61,8 +62,7 @@ const isEditMerchantProcessingFeeDialogVisible = ref(false);
             v-model:payBy="payBy"
             :amount="amount"
             :taxRate="Number(location?.taxRate ?? 0)"
-            :percentage="percentage"
-            :fiexdFee="fiexdFee"
+            :processingFee="patient.fiexdFee + patientPercentageFee"
             v-model:total="total"
             @editProcessingFee="isEditMerchantProcessingFeeDialogVisible = true"
           />
@@ -106,9 +106,9 @@ const isEditMerchantProcessingFeeDialogVisible = ref(false);
       v-model:amount="amount"
       :taxRate="Number(location?.taxRate ?? 0)"
       @update="
-        ({ patient }) => {
-          percentage = patient.percentage;
-          fiexdFee = patient.fiexdFee;
+        ({ patient: newPatient }) => {
+          patient.percentage = newPatient.percentage;
+          patient.fiexdFee = newPatient.fiexdFee;
         }
       "
     />
