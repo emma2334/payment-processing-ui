@@ -92,7 +92,9 @@ const {
           >
             <template #prepend>$</template>
           </q-input>
-          <span class="text-hint text-xss">/ ${{ fiexdFee }}</span>
+          <span class="text-hint text-xss"
+            >/ {{ $n(fiexdFee, 'currency') }}</span
+          >
         </div>
         <div class="row items-center q-col-gutter-sm">
           <span>{{ $t('Patient processing fee') }}</span>
@@ -123,7 +125,9 @@ const {
           >
             <template #prepend>$</template>
           </q-input>
-          <span class="text-hint text-xss">/ ${{ fiexdFee }}</span>
+          <span class="text-hint text-xss"
+            >/ {{ $n(fiexdFee, 'currency') }}</span
+          >
         </div>
         <a
           class="text-xs"

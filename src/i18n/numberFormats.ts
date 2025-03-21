@@ -15,7 +15,7 @@ export const numberFormats: VueI18nOptions['numberFormats'] = {
     percent: {
       style: 'percent',
       useGrouping: false,
-      minimumFractionDigits: 1,
+      minimumFractionDigits: 2,
     },
   },
 };
