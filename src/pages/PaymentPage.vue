@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { provide, ref, computed, readonly } from 'vue';
 import { LOCATIONS } from 'src/mock/data';
 import UiContentBox from 'src/components/UiContentBox.vue';
 import AmountInput from 'src/components/payment/AmountInput.vue';
@@ -11,18 +11,31 @@ import CreditCardDetailsDialog from 'src/components/payment/CreditCardDetailsDia
 import PaymentOnReaderDialog from 'src/components/payment/PaymentOnReaderDialog.vue';
 import EditMerchantProcessingFeeDialog from 'src/components/payment/EditMerchantProcessingFeeDialog.vue';
 import { useProcessingFee } from 'src/composables/useProcessingFee';
+import { InjectionPayment } from 'src/consts/symbols';
 
 const location = ref<typeof LOCATIONS[number]>();
 const device = ref<string>();
 const amount = ref();
 const payBy = ref<'cash' | 'card'>('cash');
-const total = ref<number>(0);
+const taxRate = computed(() => Number(location.value?.taxRate ?? 0));
 
 const isCreditCardDetailsDialogVisible = ref(false);
 const isPaymentOnReaderDialogVisible = ref(false);
 const isEditMerchantProcessingFeeDialogVisible = ref(false);
 
 const { patient, patientPercentageFee } = useProcessingFee(amount);
+
+provide(InjectionPayment, {
+  payment: computed(() =>
+    payBy.value === 'cash'
+      ? (amount.value ?? 0) * (taxRate.value + 1)
+      : (amount.value ?? 0) * (taxRate.value + 1) + patientPercentageFee.value
+  ),
+  amount: computed(() => amount.value ?? 0),
+  taxRate: readonly(taxRate),
+  processingFee: readonly(patientPercentageFee),
+  payBy,
+});
 </script>
 
 <template>
@@ -33,7 +46,6 @@ const { patient, patientPercentageFee } = useProcessingFee(amount);
     </div>
 
     <UiContentBox>
-      <!-- {{ data }} -->
       <template #default>
         <div class="section">
           <div class="content">
@@ -59,11 +71,6 @@ const { patient, patientPercentageFee } = useProcessingFee(amount);
         </div>
         <div class="section">
           <SummarySection
-            v-model:payBy="payBy"
-            :amount="amount"
-            :taxRate="Number(location?.taxRate ?? 0)"
-            :processingFee="patient.fiexdFee + patientPercentageFee"
-            v-model:total="total"
             @editProcessingFee="isEditMerchantProcessingFeeDialogVisible = true"
           />
         </div>
@@ -103,8 +110,6 @@ const { patient, patientPercentageFee } = useProcessingFee(amount);
     <PaymentOnReaderDialog v-model="isPaymentOnReaderDialogVisible" />
     <EditMerchantProcessingFeeDialog
       v-model="isEditMerchantProcessingFeeDialogVisible"
-      v-model:amount="amount"
-      :taxRate="Number(location?.taxRate ?? 0)"
       @update="
         ({ patient: newPatient }) => {
           patient.percentage = newPatient.percentage;

@@ -1,31 +1,15 @@
 <script setup lang="ts">
-import { watch } from 'vue';
+import { computed } from 'vue';
 import UiOptionGroup from '../UiOptionGroup.vue';
-
-const props = withDefaults(
-  defineProps<{
-    amount: number;
-    taxRate: number;
-    processingFee: number;
-  }>(),
-  {
-    amount: 0,
-    taxRate: 0,
-    percentage: 0,
-    fiexdFee: 0,
-  }
-);
-
-const payBy = defineModel<'cash' | 'card'>('payBy');
-const total = defineModel<number>('total', { default: 0 });
+import { useInjectPayment } from 'src/composables/injects';
 
 const emit = defineEmits<{
   (e: 'editProcessingFee'): void;
 }>();
 
-watch([() => props.amount, () => props.taxRate], ([newAmount, newTaxRate]) => {
-  total.value = newAmount * (1 + newTaxRate);
-});
+const { payment, amount, taxRate, processingFee, payBy } = useInjectPayment();
+const total = computed(() => amount.value * (taxRate.value + 1));
+const isInvalidAmount = computed(() => amount.value > 0 && amount.value < 0.05);
 </script>
 
 <template>
@@ -81,21 +65,19 @@ watch([() => props.amount, () => props.taxRate], ([newAmount, newTaxRate]) => {
   <hr />
 
   <div class="flex items-center q-py-lg text-weight-bold">
-    <span v-if="payBy === 'cash'">
+    <template v-if="payBy === 'cash'">
       {{ $t('Pay by Cash Total') }}
-      <q-space />
-      <span class="text-xl green">{{ $n(total, 'currency') }}</span>
-    </span>
-    <span v-else>
+    </template>
+    <template v-else>
       {{ $t('Pay by Card Total') }}
-      <q-space />
-      <span class="text-xl green">{{
-        $n(total + processingFee, 'currency')
-      }}</span>
-    </span>
+    </template>
+    <q-space />
+    <span :class="['text-xl', isInvalidAmount ? 'red' : 'green']">{{
+      $n(payment, 'currency')
+    }}</span>
   </div>
 
-  <span v-if="total > 0 && total < 0.05" class="red text-weight-medium">
+  <span v-if="isInvalidAmount" class="red text-weight-medium">
     *{{
       $t('Total amount falls below the required minimum of {limit}', {
         limit: $n(0.05, 'currency'),

@@ -38,7 +38,7 @@ function handlePayment() {
           }}
         </div>
         <div class="full-width">
-          <UiButton class="full-width" color="teal" no-caps>
+          <UiButton class="full-width light" color="teal" no-caps flat>
             {{ $t('Auto-Processing in {count}s', { count }) }}
           </UiButton>
         </div>

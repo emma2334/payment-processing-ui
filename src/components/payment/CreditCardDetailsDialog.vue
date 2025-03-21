@@ -2,7 +2,9 @@
 import { ref } from 'vue';
 import { COUNTRIES } from '../../consts/countries';
 import UiButton from '../UiButton.vue';
+import { useInjectPayment } from 'src/composables/injects';
 
+const { payment } = useInjectPayment();
 const isVisible = defineModel();
 
 const name = ref<string>();
@@ -76,7 +78,7 @@ const zip = ref<string>();
         <q-btn flat no-caps v-close-popup>{{ $t('Cancle') }}</q-btn>
         <q-space />
         <UiButton no-caps>{{
-          $t('Pay {total}', { total: $n(0, 'currency') })
+          $t('Pay {total}', { total: $n(payment, 'currency') })
         }}</UiButton>
       </q-card-actions>
     </q-card>

@@ -1,22 +1,15 @@
 <script setup lang="ts">
-import { toRef } from 'vue';
 import UiButton from '../UiButton.vue';
 import UiSlider from '../UiSlider.vue';
 import { useProcessingFee } from 'src/composables/useProcessingFee';
-
-const isVisible = defineModel();
-
-const props = withDefaults(
-  defineProps<{
-    amount: number;
-    taxRate: number;
-  }>(),
-  { amount: 0 }
-);
+import { useInjectPayment } from 'src/composables/injects';
 
 defineEmits<{
   update: [{ merchant: typeof merchant; patient: typeof patient }];
 }>();
+
+const { amount } = useInjectPayment();
+const isVisible = defineModel();
 
 const {
   percentage,
@@ -25,7 +18,7 @@ const {
   patient,
   merchantPercentageFee,
   patientPercentageFee,
-} = useProcessingFee(toRef(props, 'amount'));
+} = useProcessingFee(amount);
 </script>
 
 <template>
