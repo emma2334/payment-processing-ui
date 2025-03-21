@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { COUNTRIES } from '../../consts/countries';
 import UiButton from '../UiButton.vue';
 
-const { t } = useI18n();
 const isVisible = defineModel();
 
 const name = ref<string>();
@@ -20,7 +18,7 @@ const zip = ref<string>();
     <q-card>
       <q-card-section class="row items-center q-pb-none">
         <div class="text-2xl text-weight-bold">
-          {{ t('Credit Card Details') }}
+          {{ $t('Credit Card Details') }}
         </div>
         <q-space />
         <q-btn icon="close" flat round dense v-close-popup />
@@ -30,13 +28,13 @@ const zip = ref<string>();
         <q-input
           v-model="name"
           class="col-12"
-          :label="t('Name on Card')"
+          :label="$t('Name on Card')"
           filled
         />
         <q-input
           v-model="cardNumber"
           class="col-12"
-          :label="t('Card Number')"
+          :label="$t('Card Number')"
           mask="#### #### #### ####"
           unmasked-value
           filled
@@ -44,7 +42,7 @@ const zip = ref<string>();
         <q-input
           v-model="date"
           class="col-6"
-          :label="t('Expiration Date')"
+          :label="$t('Expiration Date')"
           mask="##/##"
           unmasked-value
           filled
@@ -60,9 +58,12 @@ const zip = ref<string>();
         <q-select
           v-model="country"
           class="col-6"
-          :label="t('Country')"
+          :label="$t('Country')"
           :options="
-            COUNTRIES.map((e) => ({ label: `${t(e)}`, value: e.toLowerCase() }))
+            COUNTRIES.map((e) => ({
+              label: `${$t(e)}`,
+              value: e.toLowerCase(),
+            }))
           "
           filled
         />
@@ -72,9 +73,11 @@ const zip = ref<string>();
       <q-separator />
 
       <q-card-actions>
-        <q-btn flat no-caps v-close-popup>{{ t('Cancle') }}</q-btn>
+        <q-btn flat no-caps v-close-popup>{{ $t('Cancle') }}</q-btn>
         <q-space />
-        <UiButton no-caps>{{ t('Pay') }} $0</UiButton>
+        <UiButton no-caps>{{
+          $t('Pay {total}', { total: $n(0, 'currency') })
+        }}</UiButton>
       </q-card-actions>
     </q-card>
   </q-dialog>

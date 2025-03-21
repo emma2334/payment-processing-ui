@@ -9,6 +9,7 @@ const isVisible = defineModel();
 const props = withDefaults(
   defineProps<{
     amount: number;
+    taxRate: number;
   }>(),
   { amount: 0 }
 );

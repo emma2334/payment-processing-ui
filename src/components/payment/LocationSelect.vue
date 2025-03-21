@@ -3,7 +3,7 @@ import { defineModel } from 'vue';
 import { LOCATIONS } from 'src/mock/data';
 import { useFetch } from '../../composables/useFetch';
 
-const location = defineModel();
+const location = defineModel<typeof LOCATIONS[number]>();
 const { data } = useFetch<typeof LOCATIONS>('/api/locations', {
   onSucess: (data) => {
     location.value = data?.value?.[0];

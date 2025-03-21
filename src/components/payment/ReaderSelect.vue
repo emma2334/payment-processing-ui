@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { defineModel } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { PAYMENT_LOCATION_READERS } from 'src/mock/data';
 import { useFetch } from '../../composables/useFetch';
 
@@ -8,7 +7,6 @@ defineProps<{
   dense?: boolean;
 }>();
 
-const { t } = useI18n();
 const reader = defineModel();
 const { data } = useFetch<typeof PAYMENT_LOCATION_READERS>(
   '/api/payment-location-readers',
@@ -25,7 +23,7 @@ const { data } = useFetch<typeof PAYMENT_LOCATION_READERS>(
     v-model="reader"
     :options="data"
     option-label="label"
-    :label="t('Device Reader')"
+    :label="$t('Device Reader')"
   >
     <template #option="scope">
       <q-item v-bind="scope.itemProps" :dense="dense">

@@ -1,31 +1,53 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
+import { watch } from 'vue';
 import UiOptionGroup from '../UiOptionGroup.vue';
 
-const { t } = useI18n();
-const payBy = defineModel('payBy');
+const props = withDefaults(
+  defineProps<{
+    amount: number;
+    taxRate: number;
+    percentage: number;
+    fiexdFee: number;
+  }>(),
+  {
+    amount: 0,
+    taxRate: 0,
+    percentage: 0,
+    fiexdFee: 0,
+  }
+);
+
+const payBy = defineModel<'cash' | 'card'>('payBy');
+const total = defineModel<number>('total', { default: 0 });
+
 const emit = defineEmits<{
   (e: 'editProcessingFee'): void;
 }>();
+
+watch([() => props.amount, () => props.taxRate], ([newAmount, newTaxRate]) => {
+  total.value = newAmount * (1 + newTaxRate);
+});
 </script>
 
 <template>
   <div class="flex q-py-md">
-    {{ t('Subtotal') }}
+    {{ $t('Subtotal') }}
     <q-space />
-    <span>$0</span>
+    <span>{{ $n(amount, 'currency') }}</span>
   </div>
 
   <div class="flex q-py-md">
-    {{ t('Tax') }}
+    {{ $t('Tax') }} {{ $n(taxRate, 'percent') }}
     <q-space />
-    <span>$0</span>
+    <span>{{ $n(amount * taxRate, 'currency') }}</span>
   </div>
 
   <hr />
 
-  <div class="q-py-lg text-weight-medium">
-    {{ t('Total') }}
+  <div class="flex q-py-lg text-weight-medium">
+    {{ $t('Total') }}
+    <q-space />
+    <span>{{ $n(total, 'currency') }}</span>
   </div>
 
   <UiOptionGroup
@@ -36,12 +58,12 @@ const emit = defineEmits<{
     :options="[
       {
         value: 'cash',
-        label: t('Pay by Cash'),
+        label: `${$t('Pay by Cash')} ${$n(total, 'currency')}`,
         icon: 'fa-duotone fa-solid fa-sack-dollar',
       },
       {
         value: 'card',
-        label: t('Pay by Card'),
+        label: `${$t('Pay by Card')} ${$n(total, 'currency')}`,
         icon: 'fa-duotone fa-solid fa-credit-card',
       },
     ]"
@@ -49,28 +71,32 @@ const emit = defineEmits<{
 
   <div class="flex q-py-lg">
     <span>
-      {{ t('Patient Card Processing Fee') }}
-      <a href="#" @click="emit('editProcessingFee')">{{ t('Edit') }}</a>
+      {{ $t('Patient Card Processing Fee') }}
+      <a href="#" @click="emit('editProcessingFee')">{{ $t('Edit') }}</a>
     </span>
     <q-space />
-    <span>$0</span>
+    <span>{{ $n(0, 'currency') }}</span>
   </div>
 
   <hr />
 
   <div class="flex items-center q-py-lg text-weight-bold">
-    <template v-if="payBy === 'cash'">
-      {{ t('Pay by Cash Total') }}
-    </template>
-    <template v-else>
-      {{ t('Pay by Card Total') }}
-    </template>
+    <span v-if="payBy === 'cash'">
+      {{ $t('Pay by Cash Total') }}
+    </span>
+    <span v-else>
+      {{ $t('Pay by Card Total') }}
+    </span>
     <q-space />
-    <span class="text-xl green">$0</span>
+    <span class="text-xl green">{{ $n(total, 'currency') }}</span>
   </div>
 
-  <span class="red text-weight-medium">
-    *{{ t('Total amount falls below the required minimum of $0.50') }}
+  <span v-if="total < 0.05" class="red text-weight-medium">
+    *{{
+      $t('Total amount falls below the required minimum of {limit}', {
+        limit: $n(0.05, 'currency'),
+      })
+    }}
   </span>
 </template>
 
