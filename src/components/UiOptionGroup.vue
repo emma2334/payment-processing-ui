@@ -9,7 +9,10 @@ defineProps<{
 </script>
 
 <template>
-  <q-btn-toggle :options="options.map(({ value }) => ({ value, slot: value }))">
+  <q-btn-toggle
+    class="btn"
+    :options="options.map(({ value }) => ({ value, slot: value }))"
+  >
     <template
       v-for="option in options"
       :key="option.value"
@@ -24,10 +27,14 @@ defineProps<{
 </template>
 
 <style scoped lang="scss">
-:deep(button) {
+.btn :deep(button) {
   color: $teal-700 !important;
   --fa-primary-color: $teal-700;
   --fa-secondary-color: $teal-700;
+
+  .q-icon {
+    font-size: 12px;
+  }
 
   &[aria-pressed='true'] {
     background-color: $teal-100 !important;

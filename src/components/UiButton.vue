@@ -26,16 +26,20 @@ defineProps<{
     --fa-primary-color: $orange-400;
     --fa-secondary-color: $orange-400;
   }
-}
 
-.btn.teal {
-  background-color: $teal-300;
+  :deep(.q-icon) {
+    font-size: 16px;
+  }
 
-  &.light {
-    background-color: $teal-50;
-    color: $teal-900;
-    --fa-primary-color: $teal-900;
-    --fa-secondary-color: $teal-900;
+  &.teal {
+    background-color: $teal-300;
+
+    &.light {
+      background-color: $teal-50;
+      color: $teal-900;
+      --fa-primary-color: $teal-900;
+      --fa-secondary-color: $teal-900;
+    }
   }
 }
 </style>

@@ -32,7 +32,7 @@ const { data } = useFetch<typeof PAYMENT_LOCATION_READERS>(
             :name="`fa-duotone fa-solid fa-circle-${
               scope.opt.status === 'online' ? 'dot' : 'xmark'
             }`"
-            size="xs"
+            size="16px"
           />
         </q-item-section>
         <q-item-section>
