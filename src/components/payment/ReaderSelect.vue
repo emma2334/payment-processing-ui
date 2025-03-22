@@ -2,6 +2,7 @@
 import { defineModel } from 'vue';
 import { PAYMENT_LOCATION_READERS } from 'src/mock/data';
 import { useFetch } from '../../composables/useFetch';
+import UiSelect from '../UiSelect.vue';
 
 defineProps<{
   dense?: boolean;
@@ -19,40 +20,42 @@ const { data } = useFetch<typeof PAYMENT_LOCATION_READERS>(
 </script>
 
 <template>
-  <q-select
+  <UiSelect
     v-model="reader"
+    class="reader"
     :options="data"
     option-label="label"
     :label="$t('Device Reader')"
+    :optionIcon="
+      (data) =>
+        data.opt.status === 'online'
+          ? 'fa-duotone fa-solid fa-circle-dot'
+          : 'fa-duotone fa-solid fa-circle-xmark'
+    "
   >
-    <template #option="scope">
-      <q-item v-bind="scope.itemProps" :dense="dense">
-        <q-item-section avatar>
-          <q-icon
-            :name="`fa-duotone fa-solid fa-circle-${
-              scope.opt.status === 'online' ? 'dot' : 'xmark'
-            }`"
-            size="16px"
-          />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>{{ scope.opt.label }}</q-item-label>
-        </q-item-section>
-      </q-item>
+    <template #icon="scope">
+      <q-icon
+        :name="`fa-duotone fa-solid fa-circle-${
+          scope.opt.status === 'online' ? 'dot' : 'xmark'
+        }`"
+        size="16px"
+      />
     </template>
-  </q-select>
+  </UiSelect>
 </template>
 
 <style scoped lang="scss">
-.fa-circle-xmark {
-  color: $gray-400;
-  --fa-primary-color: $gray-400;
-  --fa-secondary-color: $gray-400;
-}
+.reader {
+  .fa-circle-xmark {
+    color: $gray-400;
+    --fa-primary-color: $gray-400;
+    --fa-secondary-color: $gray-400;
+  }
 
-.fa-circle-dot {
-  color: $green-500;
-  --fa-primary-color: $green-500;
-  --fa-secondary-color: $green-500;
+  .fa-circle-dot {
+    color: $green-500;
+    --fa-primary-color: $green-500;
+    --fa-secondary-color: $green-500;
+  }
 }
 </style>

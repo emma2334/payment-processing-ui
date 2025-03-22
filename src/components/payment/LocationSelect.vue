@@ -2,6 +2,7 @@
 import { defineModel } from 'vue';
 import { LOCATIONS } from 'src/mock/data';
 import { useFetch } from '../../composables/useFetch';
+import UiSelect from '../UiSelect.vue';
 
 const location = defineModel<typeof LOCATIONS[number]>();
 const { data } = useFetch<typeof LOCATIONS>('/api/locations', {
@@ -12,9 +13,9 @@ const { data } = useFetch<typeof LOCATIONS>('/api/locations', {
 </script>
 
 <template>
-  <q-select v-model="location" :options="data" option-label="name">
+  <UiSelect v-model="location" :options="data" option-label="name">
     <template #prepend>
       <q-icon name="fa-duotone fa-solid fa-location-dot" size="12px" />
     </template>
-  </q-select>
+  </UiSelect>
 </template>
