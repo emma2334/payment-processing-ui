@@ -10,6 +10,7 @@ import UiButton from 'src/components/UiButton.vue';
 import CreditCardDetailsDialog from 'src/components/payment/CreditCardDetailsDialog.vue';
 import PaymentOnReaderDialog from 'src/components/payment/PaymentOnReaderDialog.vue';
 import EditMerchantProcessingFeeDialog from 'src/components/payment/EditMerchantProcessingFeeDialog.vue';
+import UiInput from 'src/components/UiInput.vue';
 import { useProcessingFee } from 'src/composables/useProcessingFee';
 import { InjectionPayment } from 'src/consts/symbols';
 
@@ -67,7 +68,7 @@ provide(InjectionPayment, {
             />
           </div>
           <div class="content">
-            <q-input
+            <UiInput
               class="description"
               filled
               type="textarea"

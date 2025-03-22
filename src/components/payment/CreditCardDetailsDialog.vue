@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { COUNTRIES } from '../../consts/countries';
 import UiButton from '../UiButton.vue';
 import { useInjectPayment } from 'src/composables/injects';
+import UiInput from '../UiInput.vue';
 
 const { payment } = useInjectPayment();
 const isVisible = defineModel();
@@ -27,13 +28,13 @@ const zip = ref<string>();
       </q-card-section>
 
       <q-card-section class="row q-col-gutter-sm">
-        <q-input
+        <UiInput
           v-model="name"
           class="col-12"
           :label="$t('Name on Card')"
           filled
         />
-        <q-input
+        <UiInput
           v-model="cardNumber"
           class="col-12"
           :label="$t('Card Number')"
@@ -41,7 +42,7 @@ const zip = ref<string>();
           unmasked-value
           filled
         />
-        <q-input
+        <UiInput
           v-model="date"
           class="col-6"
           :label="$t('Expiration Date')"
@@ -49,7 +50,7 @@ const zip = ref<string>();
           unmasked-value
           filled
         />
-        <q-input
+        <UiInput
           class="col-6"
           v-model="cvc"
           label="CVC"
@@ -69,7 +70,7 @@ const zip = ref<string>();
           "
           filled
         />
-        <q-input class="col-6" v-model="zip" label="ZIP" filled />
+        <UiInput class="col-6" v-model="zip" label="ZIP" filled />
       </q-card-section>
 
       <q-separator />

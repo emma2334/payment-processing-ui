@@ -3,6 +3,7 @@ import UiButton from '../UiButton.vue';
 import UiSlider from '../UiSlider.vue';
 import { useProcessingFee } from 'src/composables/useProcessingFee';
 import { useInjectPayment } from 'src/composables/injects';
+import UiInput from '../UiInput.vue';
 
 defineEmits<{
   update: [{ merchant: typeof merchant; patient: typeof patient }];
@@ -65,66 +66,66 @@ const {
         <div class="row items-center q-col-gutter-sm">
           <span>{{ $t('Merchant processing fee') }}</span>
 
-          <q-input
+          <UiInput
             v-model.number="merchant.percentage"
             :min="0"
             :max="fiexdFee"
-            class="col"
+            class="input col"
             type="number"
             filled
             dense
             :rules="[(val:number) => (val >= 0 && val <= percentage)]"
           >
             <template #append>%</template>
-          </q-input>
+          </UiInput>
           <span class="text-hint text-xss"
             >/ {{ $n(percentage, { maximumFractionDigits: 1 }) }}%</span
           >
           <span>+</span>
-          <q-input
+          <UiInput
             v-model.number="merchant.fiexdFee"
             min="0"
-            class="col"
+            class="input col"
             type="number"
             filled
             dense
             :rules="[(val:number) => (val >= 0 && val <= fiexdFee)]"
           >
             <template #prepend>$</template>
-          </q-input>
+          </UiInput>
           <span class="text-hint text-xss"
             >/ {{ $n(fiexdFee, 'currency') }}</span
           >
         </div>
         <div class="row items-center q-col-gutter-sm">
           <span>{{ $t('Patient processing fee') }}</span>
-          <q-input
+          <UiInput
             v-model.number="patient.percentage"
             min="0"
             :max="fiexdFee"
-            class="col"
+            class="input col"
             type="number"
             filled
             dense
             :rules="[(val:number) => (val >= 0 && val <= percentage)]"
           >
             <template #append>%</template>
-          </q-input>
+          </UiInput>
           <span class="text-hint text-xss"
             >/ {{ $n(percentage, { maximumFractionDigits: 1 }) }}%</span
           >
           <span>+</span>
-          <q-input
+          <UiInput
             v-model.number="patient.fiexdFee"
             min="0"
-            class="col"
+            class="input col"
             type="number"
             filled
             dense
             :rules="[(val:number) => (val >= 0 && val <= fiexdFee)]"
           >
             <template #prepend>$</template>
-          </q-input>
+          </UiInput>
           <span class="text-hint text-xss"
             >/ {{ $n(fiexdFee, 'currency') }}</span
           >
@@ -179,7 +180,7 @@ const {
 </template>
 
 <style scoped lang="scss">
-:deep(.q-input) {
+:deep(.input) {
   padding-bottom: 0;
 
   input {
