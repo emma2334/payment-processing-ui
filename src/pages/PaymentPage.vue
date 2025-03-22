@@ -68,7 +68,7 @@ provide(InjectionPayment, {
           </div>
           <div class="content">
             <q-input
-              class="col-8"
+              class="description"
               filled
               type="textarea"
               :label="$t('Description (Optional)')"
@@ -137,6 +137,13 @@ provide(InjectionPayment, {
     order: 1;
     margin-top: 16px;
     width: 100%;
+  }
+}
+
+.description {
+  @media (min-width: $breakpoint-md-min) {
+    max-width: 400px;
+    margin: auto;
   }
 }
 </style>

@@ -2,8 +2,18 @@
 
 <template>
   <q-layout>
-    <q-page-container class="q-pa-sm q-pa-md-lg">
+    <q-page-container class="padding">
       <router-view />
     </q-page-container>
   </q-layout>
 </template>
+
+<style scoped lang="scss">
+.padding {
+  padding: 12px;
+
+  @media (min-width: $breakpoint-md-min) {
+    padding: 24px;
+  }
+}
+</style>

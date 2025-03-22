@@ -1,11 +1,11 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="wrapper column row-md full-width">
+  <div class="wrapper flex full-width">
     <div class="content col">
       <slot />
     </div>
-    <div v-if="$slots.right" class="content right col-3">
+    <div v-if="$slots.right" class="content right">
       <slot name="right" />
     </div>
   </div>
@@ -13,8 +13,13 @@
 
 <style scoped lang="scss">
 .wrapper {
+  flex-direction: column;
   border: solid 1px $gray-200;
   border-radius: 8px;
+
+  @media (min-width: $breakpoint-md-min) {
+    flex-direction: row;
+  }
 }
 
 .content {
@@ -22,6 +27,7 @@
     border-top: solid 1px $gray-200;
 
     @media (min-width: $breakpoint-md-min) {
+      width: 30%;
       border-top: 0;
       border-left: solid 1px $gray-200;
     }
