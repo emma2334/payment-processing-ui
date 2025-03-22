@@ -40,9 +40,20 @@ provide(InjectionPayment, {
 
 <template>
   <q-page class="column">
-    <div class="row">
-      <div class="text-2xl text-weight-medium">{{ $t('collect payment') }}</div>
-      <LocationSelect v-model="location" filled dense />
+    <div class="header row items-center q-mb-md">
+      <div class="q-mr-sm text-2xl text-weight-medium">
+        {{ $t('collect payment') }}
+      </div>
+      <LocationSelect class="location" v-model="location" filled dense />
+      <q-space />
+      <a
+        v-if="amount"
+        class="text-negative"
+        href=""
+        @click.prevent="amount = undefined"
+      >
+        {{ $t('Reset Payment') }}
+      </a>
     </div>
 
     <UiContentBox>
@@ -119,3 +130,13 @@ provide(InjectionPayment, {
     />
   </q-page>
 </template>
+
+<style scoped lang="scss">
+@media (max-width: $breakpoint-sm-max) {
+  .header .location {
+    order: 1;
+    margin-top: 16px;
+    width: 100%;
+  }
+}
+</style>

@@ -72,12 +72,13 @@ const isInvalidAmount = computed(() => amount.value > 0 && amount.value < 0.05);
       {{ $t('Pay by Card Total') }}
     </template>
     <q-space />
-    <span :class="['text-xl', isInvalidAmount ? 'red' : 'green']">{{
-      $n(payment, 'currency')
-    }}</span>
+    <span
+      :class="['text-xl', isInvalidAmount ? 'text-negative' : 'text-positive']"
+      >{{ $n(payment, 'currency') }}</span
+    >
   </div>
 
-  <span v-if="isInvalidAmount" class="red text-weight-medium">
+  <span v-if="isInvalidAmount" class="text-negative text-weight-medium">
     *{{
       $t('Total amount falls below the required minimum of {limit}', {
         limit: $n(0.05, 'currency'),
@@ -87,14 +88,6 @@ const isInvalidAmount = computed(() => amount.value > 0 && amount.value < 0.05);
 </template>
 
 <style scoped lang="scss">
-.green {
-  color: $green-500;
-}
-
-.red {
-  color: $red-500;
-}
-
 .teal {
   color: $teal-700;
 }
