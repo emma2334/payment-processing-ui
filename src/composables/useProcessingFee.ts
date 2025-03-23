@@ -2,9 +2,14 @@ import { round } from 'src/utils/math';
 import { computed, isRef, reactive, ref, Ref, toRef, watch } from 'vue';
 import { useFetch } from '@composables/useFetch';
 import { ORGANIZATION } from '@mock/data';
+import { calProcessingPercentageFee } from '@utils/payment';
 
-export function useProcessingFee(amount: Ref<number> | number) {
+export function useProcessingFee(
+  amount: Ref<number> | number,
+  taxRate: Ref<number> | number
+) {
   if (!isRef(amount)) amount = toRef(amount);
+  if (!isRef(taxRate)) taxRate = toRef(taxRate);
 
   const percentage = ref(0);
   const fiexdFee = ref(0);
@@ -28,12 +33,20 @@ export function useProcessingFee(amount: Ref<number> | number) {
   });
 
   const merchantPercentageFee = computed(() => {
-    return ((amount.value ?? 0) * merchant.percentage) / 100;
+    return calProcessingPercentageFee({
+      amount,
+      taxRate,
+      percentage: merchant.percentage,
+    });
   });
 
-  const patientPercentageFee = computed(
-    () => ((amount.value ?? 0) * patient.percentage) / 100
-  );
+  const patientPercentageFee = computed(() => {
+    return calProcessingPercentageFee({
+      amount,
+      taxRate,
+      percentage: patient.percentage,
+    });
+  });
 
   watch(merchant, (newMerchant) => {
     if (newMerchant.percentage + patient.percentage !== percentage.value)

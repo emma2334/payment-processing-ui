@@ -7,8 +7,8 @@ const emit = defineEmits<{
   (e: 'editProcessingFee'): void;
 }>();
 
-const { payment, amount, taxRate, processingFee, payBy } = useInjectPayment();
-const total = computed(() => amount.value * (taxRate.value + 1));
+const { payment, amount, taxRate, amountWithTax, processingFee, payBy } =
+  useInjectPayment();
 const isInvalidAmount = computed(() => amount.value > 0 && amount.value < 0.05);
 </script>
 
@@ -30,7 +30,7 @@ const isInvalidAmount = computed(() => amount.value > 0 && amount.value < 0.05);
   <div class="flex q-py-lg text-weight-medium">
     {{ $t('Total') }}
     <q-space />
-    <span>{{ $n(total, 'currency') }}</span>
+    <span>{{ $n(amountWithTax, 'currency') }}</span>
   </div>
 
   <UiOptionGroup
@@ -42,12 +42,15 @@ const isInvalidAmount = computed(() => amount.value > 0 && amount.value < 0.05);
     :options="[
       {
         value: 'cash',
-        label: `${$t('Pay by Cash')} ${$n(total, 'currency')}`,
+        label: `${$t('Pay by Cash')} ${$n(amountWithTax, 'currency')}`,
         icon: 'fa-duotone fa-solid fa-sack-dollar',
       },
       {
         value: 'card',
-        label: `${$t('Pay by Card')} ${$n(total + processingFee, 'currency')}`,
+        label: `${$t('Pay by Card')} ${$n(
+          amountWithTax + processingFee,
+          'currency'
+        )}`,
         icon: 'fa-duotone fa-solid fa-credit-card',
       },
     ]"

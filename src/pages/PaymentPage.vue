@@ -13,32 +13,31 @@ import EditMerchantProcessingFeeDialog from '@components/payment/EditMerchantPro
 import UiInput from '@components/UiInput.vue';
 import { useProcessingFee } from '@composables/useProcessingFee';
 import { InjectionPayment } from '@consts/symbols';
+import { calPayment } from '@utils/payment';
 
 const location = ref<typeof LOCATIONS[number]>();
 const device = ref<string>();
-const amount = ref();
+const amountInput = ref<number>();
+const amount = computed(() => amountInput.value ?? 0);
 const payBy = ref<'cash' | 'card'>('cash');
 const taxRate = computed(() => Number(location.value?.taxRate ?? 0));
-const amountWithTax = computed(() => (amount.value ?? 0) * (taxRate.value + 1));
 
 const isCreditCardDetailsDialogVisible = ref(false);
 const isPaymentOnReaderDialogVisible = ref(false);
 const isEditMerchantProcessingFeeDialogVisible = ref(false);
 
-const { patient, patientPercentageFee } = useProcessingFee(amountWithTax);
+const { patient, patientPercentageFee } = useProcessingFee(amount, taxRate);
 const processingFee = computed(() =>
   amount.value ? patientPercentageFee.value + patient.fiexdFee : 0
 );
 
 provide(InjectionPayment, {
   payment: computed(() =>
-    payBy.value === 'cash'
-      ? amountWithTax.value
-      : amountWithTax.value + processingFee.value
+    calPayment({ payBy, amount, taxRate, processingFee })
   ),
-  amount: computed(() => amount.value ?? 0),
+  amount,
   taxRate,
-  amountWithTax,
+  amountWithTax: computed(() => amount.value * (taxRate.value + 1)),
   processingFee: readonly(processingFee),
   payBy,
 });
@@ -53,10 +52,10 @@ provide(InjectionPayment, {
       <LocationSelect class="location" v-model="location" filled dense />
       <q-space />
       <a
-        v-if="amount"
+        v-if="amountInput"
         class="text-negative"
         href=""
-        @click.prevent="amount = undefined"
+        @click.prevent="amountInput = undefined"
       >
         {{ $t('Reset Payment') }}
       </a>
@@ -67,7 +66,7 @@ provide(InjectionPayment, {
         <div class="section">
           <div class="content">
             <AmountInput
-              v-model="amount"
+              v-model="amountInput"
               :hint="$t('Enter Amount')"
               placeholder="0"
             />
