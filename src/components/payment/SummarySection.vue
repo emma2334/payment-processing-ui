@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import UiOptionGroup from '../UiOptionGroup.vue';
-import { useInjectPayment } from 'src/composables/injects';
+import UiOptionGroup from '@components/UiOptionGroup.vue';
+import { useInjectPayment } from '@composables/injects';
 
 const emit = defineEmits<{
   (e: 'editProcessingFee'): void;

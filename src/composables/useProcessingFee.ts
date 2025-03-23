@@ -1,7 +1,7 @@
 import { round } from 'src/utils/math';
 import { computed, isRef, reactive, ref, Ref, toRef, watch } from 'vue';
-import { useFetch } from './useFetch';
-import { ORGANIZATION } from 'src/mock/data';
+import { useFetch } from '@composables/useFetch';
+import { ORGANIZATION } from '@mock/data';
 
 export function useProcessingFee(amount: Ref<number> | number) {
   if (!isRef(amount)) amount = toRef(amount);

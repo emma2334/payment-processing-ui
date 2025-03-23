@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import UiButton from '../UiButton.vue';
-import UiSlider from '../UiSlider.vue';
-import { useProcessingFee } from 'src/composables/useProcessingFee';
-import { useInjectPayment } from 'src/composables/injects';
-import UiInput from '../UiInput.vue';
+import UiButton from '@components/UiButton.vue';
+import UiSlider from '@components/UiSlider.vue';
+import { useProcessingFee } from '@composables/useProcessingFee';
+import { useInjectPayment } from '@composables/injects';
+import UiInput from '@components/UiInput.vue';
 
 defineEmits<{
   update: [{ merchant: typeof merchant; patient: typeof patient }];

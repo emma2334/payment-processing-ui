@@ -1,5 +1,5 @@
 import { inject, readonly, ref } from 'vue';
-import { InjectionPayment } from 'src/consts/symbols';
+import { InjectionPayment } from '@consts/symbols';
 
 export function useInjectPayment() {
   return inject(InjectionPayment, {

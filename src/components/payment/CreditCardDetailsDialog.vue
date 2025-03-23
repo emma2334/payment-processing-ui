@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { COUNTRIES } from '../../consts/countries';
-import UiButton from '../UiButton.vue';
-import { useInjectPayment } from 'src/composables/injects';
-import UiInput from '../UiInput.vue';
+import { COUNTRIES } from '@consts/countries';
+import UiButton from '@components/UiButton.vue';
+import { useInjectPayment } from '@composables/injects';
+import UiInput from '@components/UiInput.vue';
 
 const { payment } = useInjectPayment();
 const isVisible = defineModel();

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { defineModel } from 'vue';
-import { PAYMENT_LOCATION_READERS } from 'src/mock/data';
-import { useFetch } from '../../composables/useFetch';
-import UiSelect from '../UiSelect.vue';
-import UiSelectItem from '../UiSelectItem.vue';
+import { PAYMENT_LOCATION_READERS } from '@mock/data';
+import { useFetch } from '@composables/useFetch';
+import UiSelect from '@components/UiSelect.vue';
+import UiSelectItem from '@components/UiSelectItem.vue';
 
 defineProps<{
   dense?: boolean;

@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { provide, ref, computed, readonly } from 'vue';
-import { LOCATIONS } from 'src/mock/data';
-import UiContentBox from 'src/components/UiContentBox.vue';
-import AmountInput from 'src/components/payment/AmountInput.vue';
-import LocationSelect from 'src/components/payment/LocationSelect.vue';
-import DeviceSelect from 'src/components/payment/ReaderSelect.vue';
-import SummarySection from 'src/components/payment/SummarySection.vue';
-import UiButton from 'src/components/UiButton.vue';
-import CreditCardDetailsDialog from 'src/components/payment/CreditCardDetailsDialog.vue';
-import PaymentOnReaderDialog from 'src/components/payment/PaymentOnReaderDialog.vue';
-import EditMerchantProcessingFeeDialog from 'src/components/payment/EditMerchantProcessingFeeDialog.vue';
-import UiInput from 'src/components/UiInput.vue';
-import { useProcessingFee } from 'src/composables/useProcessingFee';
-import { InjectionPayment } from 'src/consts/symbols';
+import { LOCATIONS } from '@mock/data';
+import UiContentBox from '@components/UiContentBox.vue';
+import AmountInput from '@components/payment/AmountInput.vue';
+import LocationSelect from '@components/payment/LocationSelect.vue';
+import DeviceSelect from '@components/payment/ReaderSelect.vue';
+import SummarySection from '@components/payment/SummarySection.vue';
+import UiButton from '@components/UiButton.vue';
+import CreditCardDetailsDialog from '@components/payment/CreditCardDetailsDialog.vue';
+import PaymentOnReaderDialog from '@components/payment/PaymentOnReaderDialog.vue';
+import EditMerchantProcessingFeeDialog from '@components/payment/EditMerchantProcessingFeeDialog.vue';
+import UiInput from '@components/UiInput.vue';
+import { useProcessingFee } from '@composables/useProcessingFee';
+import { InjectionPayment } from '@consts/symbols';
 
 const location = ref<typeof LOCATIONS[number]>();
 const device = ref<string>();

@@ -49,6 +49,13 @@ export default configure((ctx) => {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
     build: {
+      alias: {
+        '@components': path.resolve(__dirname, './src/components'),
+        '@composables': path.resolve(__dirname, './src/composables'),
+        '@utils': path.resolve(__dirname, './src/utils'),
+        '@consts': path.resolve(__dirname, './src/consts'),
+        '@mock': path.resolve(__dirname, './src/mock'),
+      },
       target: {
         browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
         node: 'node16',

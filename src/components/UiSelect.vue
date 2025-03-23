@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import UiSelectItem from './UiSelectItem.vue';
+import UiSelectItem from '@components/UiSelectItem.vue';
 
 defineProps<{
   icon?: string;

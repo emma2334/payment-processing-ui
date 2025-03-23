@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { defineModel } from 'vue';
-import { LOCATIONS } from 'src/mock/data';
-import { useFetch } from '../../composables/useFetch';
-import UiSelect from '../UiSelect.vue';
+import { LOCATIONS } from '@mock/data';
+import { useFetch } from '@composables/useFetch';
+import UiSelect from '@components/UiSelect.vue';
 
 const location = defineModel<typeof LOCATIONS[number]>();
 const { data } = useFetch<typeof LOCATIONS>('/api/locations', {

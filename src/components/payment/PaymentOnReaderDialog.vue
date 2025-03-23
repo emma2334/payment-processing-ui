@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { watch } from 'vue';
-import { useCountdown } from '../../composables/useCountdown';
-import UiButton from '../UiButton.vue';
+import { useCountdown } from '@composables/useCountdown';
+import UiButton from '@components/UiButton.vue';
 
 const isVisible = defineModel<boolean>({ default: false });
 
