@@ -1,12 +1,20 @@
 <script setup lang="ts">
 import UiSelectItem from './UiSelectItem.vue';
+
+defineProps<{
+  icon?: string;
+}>();
 </script>
 
 <template>
   <q-select class="select">
     <template #option="scope">
       <slot name="option" v-bind="scope">
-        <UiSelectItem v-bind="scope.itemProps" :label="scope.label" />
+        <UiSelectItem
+          v-bind="scope.itemProps"
+          :label="scope.label"
+          :icon="icon"
+        />
       </slot>
     </template>
   </q-select>

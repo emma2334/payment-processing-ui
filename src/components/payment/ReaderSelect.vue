@@ -33,17 +33,11 @@ const { data } = useFetch<typeof PAYMENT_LOCATION_READERS>(
         v-bind="scope.itemProps"
         :class="['option', scope.opt.status]"
         dense
-      >
-        <template #icon>
-          <q-icon
-            :name="`fa-duotone fa-solid fa-circle-${
-              scope.opt.status === 'online' ? 'dot' : 'xmark'
-            }`"
-            size="16px"
-          />
-        </template>
-        {{ scope.label }}
-      </UiSelectItem>
+        :icon="`fa-duotone fa-solid fa-circle-${
+          scope.opt.status === 'online' ? 'dot' : 'xmark'
+        }`"
+        :label="scope.label"
+      />
     </template>
   </UiSelect>
 </template>
