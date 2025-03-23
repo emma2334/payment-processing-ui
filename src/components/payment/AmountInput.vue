@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { defineModel } from 'vue';
 
 defineProps<{
@@ -6,37 +7,32 @@ defineProps<{
   hint?: string;
 }>();
 
+const input = ref<string>('');
 const amount = defineModel<number>();
-function handleKeydown(e: KeyboardEvent) {
-  const leigalInput = [
-    '.',
-    ...Array(10)
-      .fill(0)
-      .map((e, i) => `${i}`),
-  ];
 
-  const allowedKeys = [
-    'Backspace',
-    'ArrowLeft',
-    'ArrowRight',
-    'Delete',
-    ...leigalInput,
-  ];
+defineExpose({
+  clear: () => {
+    input.value = '';
+    amount.value = 0;
+  },
+});
+
+function handleKeypress(e: KeyboardEvent) {
   const { innerText } = e.target as HTMLInputElement;
-  const newInput = leigalInput.includes(e.key) ? innerText + e.key : innerText;
-
+  // if not 0-9 or '.'
+  // and result isn't a valid number
   if (
-    (!e.ctrlKey && !e.metaKey && !allowedKeys.includes(e.key)) ||
-    isNaN(Number(newInput))
+    ((e.key.charCodeAt(0) < 48 || e.key.charCodeAt(0) > 57) && e.key !== '.') ||
+    !Number(innerText + e.key)
   ) {
     e.preventDefault();
   }
 }
 
 function handleInput(e: Event) {
-  const { innerText } = e.target as HTMLInputElement;
-  const newNum = Number(innerText);
-  amount.value = !isNaN(newNum) && innerText.trim() !== '' ? newNum : undefined;
+  input.value = (e.target as HTMLInputElement).innerText;
+  const newNum = Number(input.value);
+  amount.value = !isNaN(newNum) && input.value.trim() !== '' ? newNum : 0;
 }
 </script>
 
@@ -44,14 +40,17 @@ function handleInput(e: Event) {
   <div class="column items-center">
     {{ hint }}
     <span
-      :class="['text-7xl text-weight-bold', { empty: amount === undefined }]"
+      :class="[
+        'text-7xl text-weight-bold',
+        { empty: input === '', error: isNaN(Number(input)) },
+      ]"
       role="textbox"
       contenteditable
-      @keydown="handleKeydown"
+      @keypress="handleKeypress"
       @input="handleInput"
       :placeholder="placeholder"
     >
-      {{ amount }}
+      {{ input }}
     </span>
   </div>
 </template>
@@ -64,26 +63,36 @@ div {
 }
 
 [contenteditable] {
-  color: black;
+  color: $gray-900;
+  border-bottom: solid 2px transparent;
+
   &:focus {
     outline: none;
-    border-bottom: solid 2px $gray-900;
+    border-color: currentColor;
   }
-}
 
-[contenteditable]:before {
-  content: '$';
-  margin-right: 0.25rem;
-  vertical-align: text-top;
-  font-size: map-get($font-sizes, 4xl);
-}
+  &:before {
+    content: '$';
+    margin-right: 0.25rem;
+    vertical-align: text-top;
+    font-size: map-get($font-sizes, 4xl);
+  }
 
-[contenteditable].empty {
-  color: $gray-100;
-  &:after {
-    content: attr(placeholder);
-    pointer-events: none;
-    font-weight: 900;
+  &.empty {
+    color: $gray-100;
+    &:after {
+      content: attr(placeholder);
+      pointer-events: none;
+      font-weight: 900;
+    }
+  }
+
+  &.error {
+    color: $negative;
+  }
+
+  :deep(br) {
+    display: none;
   }
 }
 </style>

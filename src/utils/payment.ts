@@ -18,8 +18,8 @@ export function calPayment({
   if (!isRef(processingFee)) processingFee = toRef(processingFee);
   return round(
     payBy.value === 'cash'
-      ? (amount.value ?? 0) * (taxRate.value + 1)
-      : (amount.value ?? 0) * (taxRate.value + 1) + processingFee.value
+      ? amount.value * (taxRate.value + 1)
+      : amount.value * (taxRate.value + 1) + processingFee.value
   );
 }
 

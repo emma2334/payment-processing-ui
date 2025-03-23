@@ -17,8 +17,8 @@ import { calPayment } from '@utils/payment';
 
 const location = ref<typeof LOCATIONS[number]>();
 const device = ref<string>();
-const amountInput = ref<number>();
-const amount = computed(() => amountInput.value ?? 0);
+const amount = ref<number>(0);
+const amountRef = ref<InstanceType<typeof AmountInput>>();
 const payBy = ref<'cash' | 'card'>('cash');
 const taxRate = computed(() => Number(location.value?.taxRate ?? 0));
 
@@ -52,10 +52,10 @@ provide(InjectionPayment, {
       <LocationSelect class="location" v-model="location" filled dense />
       <q-space />
       <a
-        v-if="amountInput"
+        v-if="amount"
         class="text-negative"
         href=""
-        @click.prevent="amountInput = undefined"
+        @click.prevent="amountRef?.clear"
       >
         {{ $t('Reset Payment') }}
       </a>
@@ -66,7 +66,9 @@ provide(InjectionPayment, {
         <div class="section">
           <div class="content">
             <AmountInput
-              v-model="amountInput"
+              ref="amountRef"
+              v-model="amount"
+              class="q-mb-md"
               :hint="$t('Enter Amount')"
               placeholder="0"
             />
