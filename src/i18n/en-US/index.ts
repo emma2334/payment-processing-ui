@@ -6,6 +6,7 @@ export default {
   Update: 'Update',
 
   'collect payment': 'collect payment',
+  'Reset Payment': 'Reset Payment',
   'Enter Amount': 'Enter Amount',
   'Description (Optional)': 'Description (Optional)',
   Summary: 'Summary',
