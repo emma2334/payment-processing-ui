@@ -28,16 +28,16 @@ const zip = ref<string>();
         <q-btn icon="close" flat round dense v-close-popup />
       </q-card-section>
 
-      <q-card-section class="row q-col-gutter-sm">
+      <q-card-section class="grid q-col-gutter-sm">
         <UiInput
           v-model="name"
-          class="col-12"
+          class="full"
           :label="$t('Name on Card')"
           filled
         />
         <UiInput
           v-model="cardNumber"
-          class="col-12"
+          class="full"
           :label="$t('Card Number')"
           mask="#### #### #### ####"
           unmasked-value
@@ -45,23 +45,14 @@ const zip = ref<string>();
         />
         <UiInput
           v-model="date"
-          class="col-6"
           :label="$t('Expiration Date')"
           mask="##/##"
           unmasked-value
           filled
         />
-        <UiInput
-          class="col-6"
-          v-model="cvc"
-          label="CVC"
-          mask="###"
-          unmasked-value
-          filled
-        />
+        <UiInput v-model="cvc" label="CVC" mask="###" unmasked-value filled />
         <UiSelect
           v-model="country"
-          class="col-6"
           :label="$t('Country')"
           :options="
             COUNTRIES.map((e) => ({
@@ -71,7 +62,7 @@ const zip = ref<string>();
           "
           filled
         />
-        <UiInput class="col-6" v-model="zip" label="ZIP" filled />
+        <UiInput v-model="zip" label="ZIP" filled />
       </q-card-section>
 
       <q-separator />
@@ -86,3 +77,18 @@ const zip = ref<string>();
     </q-card>
   </q-dialog>
 </template>
+
+<style scoped lang="scss">
+.grid {
+  display: grid;
+  grid-template-columns: 100%;
+
+  @media (min-width: $breakpoint-md-min) {
+    grid-template-columns: auto auto;
+
+    .full {
+      grid-column: 1 / span 2;
+    }
+  }
+}
+</style>
