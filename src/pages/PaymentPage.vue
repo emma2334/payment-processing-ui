@@ -19,22 +19,27 @@ const device = ref<string>();
 const amount = ref();
 const payBy = ref<'cash' | 'card'>('cash');
 const taxRate = computed(() => Number(location.value?.taxRate ?? 0));
+const amountWithTax = computed(() => (amount.value ?? 0) * (taxRate.value + 1));
 
 const isCreditCardDetailsDialogVisible = ref(false);
 const isPaymentOnReaderDialogVisible = ref(false);
 const isEditMerchantProcessingFeeDialogVisible = ref(false);
 
-const { patient, patientPercentageFee } = useProcessingFee(amount);
+const { patient, patientPercentageFee } = useProcessingFee(amountWithTax);
+const processingFee = computed(() =>
+  amount.value ? patientPercentageFee.value + patient.fiexdFee : 0
+);
 
 provide(InjectionPayment, {
   payment: computed(() =>
     payBy.value === 'cash'
-      ? (amount.value ?? 0) * (taxRate.value + 1)
-      : (amount.value ?? 0) * (taxRate.value + 1) + patientPercentageFee.value
+      ? amountWithTax.value
+      : amountWithTax.value + processingFee.value
   ),
   amount: computed(() => amount.value ?? 0),
-  taxRate: readonly(taxRate),
-  processingFee: readonly(patientPercentageFee),
+  taxRate,
+  amountWithTax,
+  processingFee: readonly(processingFee),
   payBy,
 });
 </script>

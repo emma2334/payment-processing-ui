@@ -9,7 +9,7 @@ defineEmits<{
   update: [{ merchant: typeof merchant; patient: typeof patient }];
 }>();
 
-const { amount } = useInjectPayment();
+const { amount, amountWithTax } = useInjectPayment();
 const isVisible = defineModel();
 
 const {
@@ -19,7 +19,7 @@ const {
   patient,
   merchantPercentageFee,
   patientPercentageFee,
-} = useProcessingFee(amount);
+} = useProcessingFee(amountWithTax);
 </script>
 
 <template>

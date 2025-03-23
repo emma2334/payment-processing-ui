@@ -6,6 +6,7 @@ export function useInjectPayment() {
     payment: readonly(ref(0)),
     amount: readonly(ref(0)),
     taxRate: readonly(ref(0)),
+    amountWithTax: readonly(ref(0)),
     processingFee: readonly(ref(0)),
     payBy: ref<'cash' | 'card'>('cash'),
   });
