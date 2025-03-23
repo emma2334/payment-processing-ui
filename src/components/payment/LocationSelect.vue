@@ -13,9 +13,10 @@ const { data } = useFetch<typeof LOCATIONS>('/api/locations', {
 </script>
 
 <template>
-  <UiSelect v-model="location" :options="data" option-label="name">
-    <template #prepend>
-      <q-icon name="fa-duotone fa-solid fa-location-dot" size="12px" />
-    </template>
-  </UiSelect>
+  <UiSelect
+    v-model="location"
+    :options="data"
+    option-label="name"
+    icon="fa-duotone fa-solid fa-location-dot"
+  />
 </template>

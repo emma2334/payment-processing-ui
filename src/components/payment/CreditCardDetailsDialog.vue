@@ -4,6 +4,7 @@ import { COUNTRIES } from '@consts/countries';
 import UiButton from '@components/UiButton.vue';
 import { useInjectPayment } from '@composables/injects';
 import UiInput from '@components/UiInput.vue';
+import UiSelect from '@components/UiSelect.vue';
 
 const { payment } = useInjectPayment();
 const isVisible = defineModel();
@@ -58,7 +59,7 @@ const zip = ref<string>();
           unmasked-value
           filled
         />
-        <q-select
+        <UiSelect
           v-model="country"
           class="col-6"
           :label="$t('Country')"
