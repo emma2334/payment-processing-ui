@@ -23,7 +23,7 @@ function handleKeypress(e: KeyboardEvent) {
   // and result isn't a valid number
   if (
     ((e.key.charCodeAt(0) < 48 || e.key.charCodeAt(0) > 57) && e.key !== '.') ||
-    !Number(innerText + e.key)
+    isNaN(Number(innerText + e.key))
   ) {
     e.preventDefault();
   }
