@@ -3,6 +3,7 @@ import { defineModel } from 'vue';
 import { PAYMENT_LOCATION_READERS } from 'src/mock/data';
 import { useFetch } from '../../composables/useFetch';
 import UiSelect from '../UiSelect.vue';
+import UiSelectItem from '../UiSelectItem.vue';
 
 defineProps<{
   dense?: boolean;
@@ -26,36 +27,57 @@ const { data } = useFetch<typeof PAYMENT_LOCATION_READERS>(
     :options="data"
     option-label="label"
     :label="$t('Device Reader')"
-    :optionIcon="
-      (data) =>
-        data.opt.status === 'online'
-          ? 'fa-duotone fa-solid fa-circle-dot'
-          : 'fa-duotone fa-solid fa-circle-xmark'
-    "
   >
-    <template #icon="scope">
-      <q-icon
-        :name="`fa-duotone fa-solid fa-circle-${
-          scope.opt.status === 'online' ? 'dot' : 'xmark'
-        }`"
-        size="16px"
-      />
+    <template #option="scope">
+      <UiSelectItem
+        v-bind="scope.itemProps"
+        :class="['option', scope.opt.status]"
+        dense
+      >
+        <template #icon>
+          <q-icon
+            :name="`fa-duotone fa-solid fa-circle-${
+              scope.opt.status === 'online' ? 'dot' : 'xmark'
+            }`"
+            size="16px"
+          />
+        </template>
+        {{ scope.label }}
+      </UiSelectItem>
     </template>
   </UiSelect>
 </template>
 
 <style scoped lang="scss">
-.reader {
-  .fa-circle-xmark {
+.option {
+  margin: 0 8px;
+  border-radius: 6px;
+
+  &.online {
+    &.q-item--active,
+    :deep(.q-icon) {
+      color: $green-500;
+      --fa-primary-color: $green-500;
+      --fa-secondary-color: $green-500;
+    }
+  }
+
+  &.offline {
     color: $gray-400;
     --fa-primary-color: $gray-400;
     --fa-secondary-color: $gray-400;
+
+    :deep(.q-focus-helper) {
+      background-color: black !important;
+    }
   }
 
-  .fa-circle-dot {
-    color: $green-500;
-    --fa-primary-color: $green-500;
-    --fa-secondary-color: $green-500;
+  &:first-child {
+    margin-top: 8px;
+  }
+
+  &:last-child {
+    margin-bottom: 8px;
   }
 }
 </style>
