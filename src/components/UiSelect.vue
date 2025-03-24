@@ -4,11 +4,12 @@ import UiSelectItem from '@components/UiSelectItem.vue';
 defineProps<{
   icon?: string;
   itemIcon?: string;
+  noBottomHint?: boolean;
 }>();
 </script>
 
 <template>
-  <q-select class="select">
+  <q-select class="select" :class="{ 'hide-hint': noBottomHint }">
     <template #prepend v-if="icon || $slots.prepend">
       <slot name="prepend">
         <q-icon :name="icon" size="12px" />
@@ -30,6 +31,13 @@ defineProps<{
 .select {
   :deep(.q-field--filled) {
     background-color: $gray-0;
+  }
+
+  &.hide-hint {
+    padding-bottom: 0;
+    :deep(.q-field__bottom) {
+      display: none;
+    }
   }
 }
 </style>

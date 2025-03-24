@@ -27,6 +27,7 @@ const date = ref<string>('');
 const cvc = ref<string>('');
 const country = ref<string>('');
 const zip = ref<string>('');
+const formRef = ref();
 </script>
 
 <template>
@@ -40,57 +41,98 @@ const zip = ref<string>('');
         <q-btn icon="close" flat round dense v-close-popup />
       </q-card-section>
 
-      <q-card-section class="grid q-col-gutter-sm">
-        <UiInput
-          v-model="name"
-          class="full"
-          :label="$t('Name on Card')"
-          filled
-        />
-        <UiInput
-          v-model="cardNumber"
-          class="full"
-          :label="$t('Card Number')"
-          mask="#### #### #### ####"
-          unmasked-value
-          filled
-        />
-        <UiInput
-          v-model="date"
-          :label="$t('Expiration Date')"
-          mask="##/##"
-          unmasked-value
-          filled
-        />
-        <UiInput v-model="cvc" label="CVC" mask="###" unmasked-value filled />
-        <UiSelect
-          v-model="country"
-          :label="$t('Country')"
-          :options="
-            COUNTRIES.map((e) => ({
-              label: `${$t(e)}`,
-              value: e.toLowerCase(),
-            }))
-          "
-          emit-value
-          filled
-        />
-        <UiInput v-model="zip" label="ZIP" filled />
-      </q-card-section>
+      <q-form
+        ref="formRef"
+        @submit.prevent.stop="
+          () => {
+            formRef.validate();
+            emits('pay', { name, cardNumber, date, cvc, country, zip });
+          }
+        "
+      >
+        <q-card-section class="grid q-col-gutter-sm">
+          <UiInput
+            v-model="name"
+            class="full"
+            :label="$t('Name on Card')"
+            filled
+            lazy-rules
+            :rules="[(val:string) => !!val || 'Name is required']"
+            noBottomHint
+          />
+          <UiInput
+            v-model="cardNumber"
+            class="full"
+            :label="$t('Card Number')"
+            mask="#### #### #### ####"
+            unmasked-value
+            filled
+            lazy-rules
+            :rules="[
+              (val:string) => !!val || 'Card number is required', 
+              (val:string) => /[0-9]{16}/.test(val) || 'Invalid card number'
+            ]"
+            noBottomHint
+          />
+          <UiInput
+            v-model="date"
+            :label="$t('Expiration Date')"
+            mask="##/##"
+            unmasked-value
+            filled
+            lazy-rules
+            :rules="[(val:string) => !!val || 'Expiration Date is required']"
+            noBottomHint
+          />
+          <UiInput
+            v-model="cvc"
+            label="CVC"
+            mask="###"
+            unmasked-value
+            filled
+            lazy-rules
+            :rules="[
+              (val:string) => !!val || 'CVC is required', 
+              (val:string) => /[0-9]{3}/.test(val) || 'Invalid CVC'
+            ]"
+            noBottomHint
+          />
+          <UiSelect
+            v-model="country"
+            :label="$t('Country')"
+            :options="
+              COUNTRIES.map((e) => ({
+                label: `${$t(e)}`,
+                value: e.toLowerCase(),
+              }))
+            "
+            emit-value
+            map-options
+            filled
+            lazy-rules
+            :rules="[(val:string) => !!val || 'Country is required']"
+            noBottomHint
+          />
+          <UiInput
+            v-model="zip"
+            label="ZIP"
+            filled
+            lazy-rules
+            :rules="[(val:string) => !!val || 'ZIP is required']"
+            noBottomHint
+          />
+        </q-card-section>
 
-      <q-separator />
+        <q-separator />
 
-      <q-card-actions>
-        <q-btn flat no-caps v-close-popup>{{ $t('Cancle') }}</q-btn>
-        <q-space />
-        <UiButton
-          no-caps
-          :disabled="!name || !cardNumber || !date || !cvc || !country || !zip"
-          @click="emits('pay', { name, cardNumber, date, cvc, country, zip })"
-        >
-          {{ $t('Pay {total}', { total: $n(payment, 'currency') }) }}
-        </UiButton>
-      </q-card-actions>
+        <q-card-actions>
+          <q-btn flat no-caps v-close-popup>{{ $t('Cancle') }}</q-btn>
+          <q-space />
+          <UiButton type="submit" no-caps>
+            {{ $t('Pay {total}', { total: $n(payment, 'currency') }) }}
+          </UiButton>
+        </q-card-actions>
+      </q-form>
     </q-card>
   </q-dialog>
 </template>
