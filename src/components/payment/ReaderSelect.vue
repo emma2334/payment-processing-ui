@@ -26,6 +26,7 @@ const { data } = useFetch<typeof PAYMENT_LOCATION_READERS>(
     class="reader"
     :options="data"
     option-label="label"
+    :option-disable="(val:typeof PAYMENT_LOCATION_READERS[number]) => val.status === 'offline'"
     :label="$t('Device Reader')"
   >
     <template #option="scope">
