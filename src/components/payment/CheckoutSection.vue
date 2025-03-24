@@ -6,10 +6,11 @@ import UiButton from '@components/UiButton.vue';
 import ReaderSelect from '@components/payment/ReaderSelect.vue';
 import CreditCardDetailsDialog from '@components/payment/CreditCardDetailsDialog.vue';
 import PaymentOnReaderDialog from '@components/payment/PaymentOnReaderDialog.vue';
+import { PAYMENT_LOCATION_READERS } from '@mock/data';
 
 const { payment, payBy, description } = useInjectPayment();
 
-const device = ref<string>();
+const reader = ref<typeof PAYMENT_LOCATION_READERS[number]>();
 const isCreditCardDetailsDialogVisible = ref(false);
 const isPaymentOnReaderDialogVisible = ref(false);
 
@@ -28,6 +29,13 @@ function payByCash() {
 
 function payByCard(card?: Record<string, string>) {
   let msg = `Pay by card\ntotal: ${payment.value}\ndescription: ${description.value}`;
+
+  // show reader info
+  msg += '\n===';
+  msg += `\nreader: ${reader.value?.label}`;
+  msg += `\nid: ${reader.value?.readerId}`;
+
+  // show card info
   if (card) {
     msg += '\n===';
     for (const key in card) {
@@ -54,7 +62,7 @@ function payByCard(card?: Record<string, string>) {
     />
   </template>
   <template v-else>
-    <ReaderSelect v-model="device" filled dense />
+    <ReaderSelect v-model="reader" filled dense />
     <UiButton
       class="full-width q-mt-lg q-mb-md"
       icon="fa-duotone fa-solid fa-tablet-screen-button"
