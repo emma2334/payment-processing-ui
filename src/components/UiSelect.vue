@@ -1,15 +1,26 @@
 <script setup lang="ts">
 import UiSelectItem from '@components/UiSelectItem.vue';
+import { ref } from 'vue';
 
 defineProps<{
   icon?: string;
   itemIcon?: string;
   noBottomHint?: boolean;
 }>();
+
+const selectRef = ref();
+
+defineExpose({
+  refresh: selectRef.value?.refresh,
+});
 </script>
 
 <template>
-  <q-select class="select" :class="{ 'hide-hint': noBottomHint }">
+  <q-select
+    ref="selectRef"
+    class="select"
+    :class="{ 'hide-hint': noBottomHint }"
+  >
     <template #prepend v-if="icon || $slots.prepend">
       <slot name="prepend">
         <q-icon :name="icon" size="12px" />

@@ -1,3 +1,4 @@
+import { LOCATIONS } from '@mock/data';
 import { InjectionKey, Ref } from 'vue';
 
 export const InjectionPayment: InjectionKey<{
@@ -8,4 +9,5 @@ export const InjectionPayment: InjectionKey<{
   processingFee: Ref<number>;
   payBy: Ref<'cash' | 'card'>;
   description: Ref<string>;
+  location: Ref<typeof LOCATIONS[number] | undefined>;
 }> = Symbol('payment');

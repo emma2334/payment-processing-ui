@@ -36,6 +36,7 @@ provide(InjectionPayment, {
   processingFee: readonly(processingFee),
   payBy,
   description,
+  location,
 });
 </script>
 

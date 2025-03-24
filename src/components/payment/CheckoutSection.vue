@@ -8,7 +8,7 @@ import CreditCardDetailsDialog from '@components/payment/CreditCardDetailsDialog
 import PaymentOnReaderDialog from '@components/payment/PaymentOnReaderDialog.vue';
 import { PAYMENT_LOCATION_READERS } from '@mock/data';
 
-const { payment, payBy, description } = useInjectPayment();
+const { payment, payBy, description, location } = useInjectPayment();
 
 const reader = ref<typeof PAYMENT_LOCATION_READERS[number]>();
 const isCreditCardDetailsDialogVisible = ref(false);
@@ -62,7 +62,7 @@ function payByCard(card?: Record<string, string>) {
     />
   </template>
   <template v-else>
-    <ReaderSelect v-model="reader" filled dense />
+    <ReaderSelect v-model="reader" :location-id="location?.id" filled dense />
     <UiButton
       class="full-width q-mt-lg q-mb-md"
       icon="fa-duotone fa-solid fa-tablet-screen-button"

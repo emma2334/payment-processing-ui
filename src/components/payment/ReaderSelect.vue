@@ -1,30 +1,49 @@
 <script setup lang="ts">
-import { defineModel } from 'vue';
+import { defineModel, watch, ref } from 'vue';
 import { PAYMENT_LOCATION_READERS } from '@mock/data';
 import { useFetch } from '@composables/useFetch';
 import UiSelect from '@components/UiSelect.vue';
 import UiSelectItem from '@components/UiSelectItem.vue';
 
-defineProps<{
+const props = defineProps<{
   dense?: boolean;
+  locationId?: number;
 }>();
 
+let options: typeof PAYMENT_LOCATION_READERS | undefined;
 const reader = defineModel();
 const { data } = useFetch<typeof PAYMENT_LOCATION_READERS>(
   '/api/payment-location-readers',
   {
     onSucess: (data) => {
-      reader.value = data?.value?.[0];
+      options = props.locationId
+        ? data?.value?.filter((e) => e.locationId === props.locationId)
+        : data?.value;
+      reader.value = options?.[0];
     },
+  }
+);
+
+const selectRef = ref<InstanceType<typeof UiSelect>>();
+
+watch(
+  () => props.locationId,
+  () => {
+    options = props.locationId
+      ? data?.value?.filter((e) => e.locationId === props.locationId)
+      : data?.value;
+    selectRef.value?.refresh?.();
+    reader.value = options?.[0];
   }
 );
 </script>
 
 <template>
   <UiSelect
+    ref="selectRef"
     v-model="reader"
     class="reader"
-    :options="data"
+    :options="options"
     option-label="label"
     :option-disable="(val:typeof PAYMENT_LOCATION_READERS[number]) => val.status === 'offline'"
     :label="$t('Device Reader')"
