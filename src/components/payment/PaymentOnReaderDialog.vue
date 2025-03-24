@@ -3,6 +3,9 @@ import { watch } from 'vue';
 import { useCountdown } from '@composables/useCountdown';
 import UiButton from '@components/UiButton.vue';
 
+const emits = defineEmits<{
+  processPayment: [];
+}>();
 const isVisible = defineModel<boolean>({ default: false });
 
 const { count, start, clear } = useCountdown(5);
@@ -17,7 +20,7 @@ watch(count, (newCount) => {
 
 function handlePayment() {
   clear();
-  console.log('proceed to process payment');
+  emits('processPayment');
 }
 </script>
 

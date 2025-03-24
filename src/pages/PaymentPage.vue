@@ -4,26 +4,21 @@ import { LOCATIONS } from '@mock/data';
 import UiContentBox from '@components/UiContentBox.vue';
 import AmountInput from '@components/payment/AmountInput.vue';
 import LocationSelect from '@components/payment/LocationSelect.vue';
-import DeviceSelect from '@components/payment/ReaderSelect.vue';
 import SummarySection from '@components/payment/SummarySection.vue';
-import UiButton from '@components/UiButton.vue';
-import CreditCardDetailsDialog from '@components/payment/CreditCardDetailsDialog.vue';
-import PaymentOnReaderDialog from '@components/payment/PaymentOnReaderDialog.vue';
 import EditMerchantProcessingFeeDialog from '@components/payment/EditMerchantProcessingFeeDialog.vue';
 import UiInput from '@components/UiInput.vue';
 import { useProcessingFee } from '@composables/useProcessingFee';
 import { InjectionPayment } from '@consts/symbols';
 import { calPayment } from '@utils/payment';
+import CheckoutSection from '@components/payment/CheckoutSection.vue';
 
 const location = ref<typeof LOCATIONS[number]>();
-const device = ref<string>();
 const amount = ref<number>(0);
 const amountRef = ref<InstanceType<typeof AmountInput>>();
+const description = ref<string>('');
 const payBy = ref<'cash' | 'card'>('cash');
 const taxRate = computed(() => Number(location.value?.taxRate ?? 0));
 
-const isCreditCardDetailsDialogVisible = ref(false);
-const isPaymentOnReaderDialogVisible = ref(false);
 const isEditMerchantProcessingFeeDialogVisible = ref(false);
 
 const { patient, patientPercentageFee } = useProcessingFee(amount, taxRate);
@@ -40,6 +35,7 @@ provide(InjectionPayment, {
   amountWithTax: computed(() => amount.value * (taxRate.value + 1)),
   processingFee: readonly(processingFee),
   payBy,
+  description,
 });
 </script>
 
@@ -75,6 +71,7 @@ provide(InjectionPayment, {
           </div>
           <div class="content">
             <UiInput
+              v-model="description"
               class="description"
               filled
               type="textarea"
@@ -94,38 +91,11 @@ provide(InjectionPayment, {
         </div>
         <div class="section">
           <LocationSelect v-model="location" borderless dense class="inline" />
-          <template v-if="payBy === 'cash'">
-            <UiButton
-              class="full-width q-mt-lg q-mb-md"
-              icon="fa-duotone fa-solid fa-money-bill-wave"
-              :label="$t('Log Payment')"
-              no-caps
-            />
-          </template>
-          <template v-else>
-            <DeviceSelect v-model="device" filled dense />
-            <UiButton
-              class="full-width q-mt-lg q-mb-md"
-              icon="fa-duotone fa-solid fa-tablet-screen-button"
-              :label="$t('Initiate Payment on Reader')"
-              no-caps
-              @click="isPaymentOnReaderDialogVisible = true"
-            />
-            <UiButton
-              class="full-width"
-              icon="fa-duotone fa-solid fa-credit-card"
-              :label="$t('Input Card Number Manually')"
-              light
-              no-caps
-              @click="isCreditCardDetailsDialogVisible = true"
-            />
-          </template>
+          <CheckoutSection />
         </div>
       </template>
     </UiContentBox>
 
-    <CreditCardDetailsDialog v-model="isCreditCardDetailsDialogVisible" />
-    <PaymentOnReaderDialog v-model="isPaymentOnReaderDialogVisible" />
     <EditMerchantProcessingFeeDialog
       v-model="isEditMerchantProcessingFeeDialogVisible"
       @update="

@@ -19,7 +19,7 @@ export function useCountdown(sec: number) {
   }
 
   onUnmounted(() => {
-    return () => clear();
+    clear();
   });
 
   return { count, start, clear };

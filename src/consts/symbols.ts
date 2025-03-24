@@ -7,4 +7,5 @@ export const InjectionPayment: InjectionKey<{
   amountWithTax: Ref<number>;
   processingFee: Ref<number>;
   payBy: Ref<'cash' | 'card'>;
+  description: Ref<string>;
 }> = Symbol('payment');

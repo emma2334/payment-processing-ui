@@ -4,7 +4,7 @@ import UiOptionGroup from '@components/UiOptionGroup.vue';
 import { useInjectPayment } from '@composables/injects';
 
 const emit = defineEmits<{
-  (e: 'editProcessingFee'): void;
+  editProcessingFee: [];
 }>();
 
 const { payment, amount, taxRate, amountWithTax, processingFee, payBy } =

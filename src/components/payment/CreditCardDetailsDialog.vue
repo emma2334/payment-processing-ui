@@ -8,13 +8,25 @@ import UiSelect from '@components/UiSelect.vue';
 
 const { payment } = useInjectPayment();
 const isVisible = defineModel();
+const emits = defineEmits<{
+  pay: [
+    {
+      name: string;
+      cardNumber: string;
+      date: string;
+      cvc: string;
+      country: string;
+      zip: string;
+    }
+  ];
+}>();
 
-const name = ref<string>();
-const cardNumber = ref<string>();
-const date = ref<string>();
-const cvc = ref<string>();
-const country = ref<string>();
-const zip = ref<string>();
+const name = ref<string>('');
+const cardNumber = ref<string>('');
+const date = ref<string>('');
+const cvc = ref<string>('');
+const country = ref<string>('');
+const zip = ref<string>('');
 </script>
 
 <template>
@@ -60,6 +72,7 @@ const zip = ref<string>();
               value: e.toLowerCase(),
             }))
           "
+          emit-value
           filled
         />
         <UiInput v-model="zip" label="ZIP" filled />
@@ -70,9 +83,13 @@ const zip = ref<string>();
       <q-card-actions>
         <q-btn flat no-caps v-close-popup>{{ $t('Cancle') }}</q-btn>
         <q-space />
-        <UiButton no-caps>{{
-          $t('Pay {total}', { total: $n(payment, 'currency') })
-        }}</UiButton>
+        <UiButton
+          no-caps
+          :disabled="!name || !cardNumber || !date || !cvc || !country || !zip"
+          @click="emits('pay', { name, cardNumber, date, cvc, country, zip })"
+        >
+          {{ $t('Pay {total}', { total: $n(payment, 'currency') }) }}
+        </UiButton>
       </q-card-actions>
     </q-card>
   </q-dialog>
