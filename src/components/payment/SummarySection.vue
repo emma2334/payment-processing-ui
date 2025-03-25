@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import UiOptionGroup from '@components/UiOptionGroup.vue';
 import { useInjectPayment } from '@composables/injects';
+import { MIN_AMOUNT } from '@consts/payment';
 
 const emit = defineEmits<{
   editProcessingFee: [];
@@ -9,7 +10,9 @@ const emit = defineEmits<{
 
 const { payment, amount, taxRate, amountWithTax, processingFee, payBy } =
   useInjectPayment();
-const isInvalidAmount = computed(() => amount.value > 0 && amount.value < 0.05);
+const isInvalidAmount = computed(
+  () => amount.value > 0 && amount.value < MIN_AMOUNT
+);
 </script>
 
 <template>
@@ -84,7 +87,7 @@ const isInvalidAmount = computed(() => amount.value > 0 && amount.value < 0.05);
   <span v-if="isInvalidAmount" class="text-negative text-weight-medium">
     *{{
       $t('Total amount falls below the required minimum of {limit}', {
-        limit: $n(0.05, 'currency'),
+        limit: $n(MIN_AMOUNT, 'currency'),
       })
     }}
   </span>

@@ -7,6 +7,7 @@ import ReaderSelect from '@components/payment/ReaderSelect.vue';
 import CreditCardDetailsDialog from '@components/payment/CreditCardDetailsDialog.vue';
 import PaymentOnReaderDialog from '@components/payment/PaymentOnReaderDialog.vue';
 import { PAYMENT_LOCATION_READERS } from '@mock/data';
+import { MIN_AMOUNT } from '@consts/payment';
 
 const { payment, payBy, description, location } = useInjectPayment();
 
@@ -59,6 +60,7 @@ function payByCard(card?: Record<string, string>) {
       :label="$t('Log Payment')"
       no-caps
       @click="payByCash"
+      :disabled="payment < MIN_AMOUNT"
     />
   </template>
   <template v-else>
@@ -69,6 +71,7 @@ function payByCard(card?: Record<string, string>) {
       :label="$t('Initiate Payment on Reader')"
       no-caps
       @click="isPaymentOnReaderDialogVisible = true"
+      :disabled="payment < MIN_AMOUNT"
     />
     <UiButton
       class="full-width"
@@ -77,6 +80,7 @@ function payByCard(card?: Record<string, string>) {
       light
       no-caps
       @click="isCreditCardDetailsDialogVisible = true"
+      :disabled="payment < MIN_AMOUNT"
     />
     <CreditCardDetailsDialog
       v-model="isCreditCardDetailsDialogVisible"
